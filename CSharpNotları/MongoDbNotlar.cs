@@ -346,6 +346,19 @@ namespace CSharpNotları
 
 
     #endregion
+    #region Delete Uygulama
+    public async Task<Movie> DeleteCommentAsync(ObjectId movieId, ObjectId commentId,
+   User user, CancellationToken cancellationToken = default)
+    {
+        var result = _commentsCollection.DeleteOne(
+              Builders<Comment>.Filter.Where(
+                 c => c.MovieId == movieId
+                       && c.Id == commentId
+                       && c.Email == user.Email));
+
+        return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
+    }
+    #endregion
 
 
     #region Basic Reads
@@ -608,6 +621,7 @@ namespace CSharpNotları
 
     #endregion
 
+
     #region BasicJoin
     //  {
     //  from: 'comments', commentsin içindeki
@@ -709,6 +723,37 @@ namespace CSharpNotları
                   Builders<Comment>.Update.Set(c => c.Text, comment).Set(c => c.Date, DateTime.UtcNow),
                   new UpdateOptions { IsUpsert = false },
                   cancellationToken);
+    }
+    #endregion
+
+
+    #region Group Örnek Uygulama
+    public async Task<TopCommentsProjection> MostActiveCommentersAsync()
+    {
+        try
+        {
+            List<ReportProjection> result = null;
+
+            result = await _commentsCollection
+               .WithReadConcern(ReadConcern.Majority)
+               .Aggregate()
+               .Group(new BsonDocument
+               {
+               {"_id", "$email"},
+               {"count", new BsonDocument("$sum", 1)}
+               })
+               .Sort(Builders<BsonDocument>.Sort.Descending("count"))
+               .Limit(20)
+               .Project<ReportProjection>(Builders<BsonDocument>.Projection.Include("email").Include("count"))
+               .ToListAsync();
+
+            return new TopCommentsProjection(result);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
     }
     #endregion
 
