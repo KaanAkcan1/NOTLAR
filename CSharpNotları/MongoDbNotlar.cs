@@ -757,6 +757,21 @@ namespace CSharpNotları
     }
     #endregion
 
+
+    #region Son uygulama migration
+    var bulkWriteDatesResult = await _moviesCollection.BulkWriteAsync(
+   datePipelineResults.Select(updatedMovie => new ReplaceOneModel<Movie>(
+      new FilterDefinitionBuilder<Movie>().Where(m => m.Id == updatedMovie.Id),
+      updatedMovie)));
+
+...
+
+var bulkWriteRatingsResult = await _moviesCollection.BulkWriteAsync(
+   ratingPipelineResults.Select(updatedMovie => new ReplaceOneModel<Movie>(
+      new FilterDefinitionBuilder<Movie>().Where(m => m.Id == updatedMovie.Id),
+      updatedMovie)));
+    #endregion
+
     #endregion
 
 
