@@ -772,6 +772,299 @@ var bulkWriteRatingsResult = await _moviesCollection.BulkWriteAsync(
       updatedMovie)));
     #endregion
 
+
+    #region Connection Pooling
+    //appsettings de connection string aşşağıdaki gibi düznlenerek connection pooling ayarlanabilir
+    //"MongoUri": "mongodb+srv://kaan:111222333@mflix.ulybz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    //"MongoUri": "mongodb+srv://kaan:111222333@mflix.ulybz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&maxpoolsize=50",
+
+    #endregion
+
+
+    #region WriteTimeOut
+    //"MongoUri": "mongodb+srv://m220student:m220student@mflix-12345.mongodb.net/sample_mflix?maxPoolSize=50"
+    //"MongoUri": "mongodb+srv://m220student:m220student@mflix-12345.mongodb.net/sample_mflix?maxPoolSize=50&wtimeoutMS=2500"
+    #endregion
+
+
+    #region Çalışmasada user ekleme kodu
+    //  db.createUser({
+    //  user : "mflixAppUser",
+    //  pwd : "mflixAppPwd",
+    //  roles : [{
+    //      role : "readWrite", db:"sample_mflix"
+    //    }]
+    //})
+    #endregion
+
+
+    #region Bölüm Sonu Soruları
+    #region Soru 1
+    //colElections.Find<BsonDocument>("{ winner_party: "Republican", winner_electoral_votes: { "$gte": 160 } }");
+    #endregion
+    #region Soru 2
+    // colPhones.UpdateMany(
+    //Builders<Phone>.Filter.Lt(p => p.SoftwareVersion, 4.0),
+    //Builders<Phone>.Update.Set(p => p.UpdateRequired, true));
+    #endregion
+    #region SoruSon
+    //people.Find(Builders<People>.Filter.Empty)
+    //.Sort(Builders<People>.Sort.Descending(p => p.Height))
+    //.Skip(3)
+    //.Limit(2);
+    #endregion
+
+    #endregion
+
+
+    #endregion
+
+
+    #region Mongo Aggregation Framework
+    #region $match:Filtering Document
+    //You can use nearly all of the familiar query operators in $match.We filter documents, retaining only those where the imdb.rating is 7 or more,
+    //genres does not include "Crime" or "Horror", the value for rated was "PG" or "G", and languages includes both "English" and "Japanese". .. code-block:
+
+    //    var pipeline = [
+    //  {
+    //    $match: {
+    //      "imdb.rating": { $gte: 7 },
+    //      genres: { $nin:[ "Crime", "Horror" ] } ,
+    //      rated: { $in: ["PG", "G" ] },
+    //      languages: { $all:[ "English", "Japanese" ] }
+    //    }
+    //  }
+    //]
+    #endregion
+
+
+    #region Shaping Document with $project
+    //{$multiply : [gravityRatio, weightOnEarth]}
+    //{$divide : ["$gravity.value", weightOnEarth]}
+
+    //db.solarSystem.aggregate([{
+    //    $project:
+    //    {
+    //        _id: 0,
+    //        name: 1,
+    //        myWeight: { $multiply :[{ $divide: ["$gravity.value", 9.8]},86]}
+    //    }
+    //}])
+
+    //var pipeline = [{ $match: {. . .} }, { $project: { . . . } }]
+
+    //    var pipeline = [
+    //  {
+    //    $match: {
+    //      "imdb.rating": { $gte: 7 },
+    //      genres: { $nin:[ "Crime", "Horror" ] } ,
+    //      rated: { $in: ["PG", "G" ] },
+    //      languages: { $all:[ "English", "Japanese" ] }
+    //    }
+    //  },
+    //  {
+    //    $project: { _id: 0, title: 1, "rated": 1 }
+    //}
+    //]
+
+    //db.movies.aggregate([...]).itcount()
+
+    //    db.movies.aggregate([
+    //  {
+    //    $match: {
+    //      title: {
+    //        $type: "string"
+    //      }
+    //    }
+    //  },
+    //  {
+    //    $project:
+    //    {
+    //    title: { $split:["$title", " "] },
+    //      _id: 0
+    //    }
+    //},
+    //  {
+    //    $match:
+    //    {
+    //    title: { $size: 1 }
+    //    }
+    //}
+    //]).itcount()
+
+    //{ $match: { writers: { $elemMatch: { $exists: true } } }
+
+    //    writers: {
+    //  $map: {
+    //    input: "$writers",
+    //    as: "writer",
+    //    in: {
+    //      $arrayElemAt: [
+    //        {
+    //          $split: [ "$$writer", " (" ]
+    //},
+    //        0
+    //      ]
+    //    }
+    //  }
+    //}
+
+
+    //    db.movies.aggregate([
+    //  {
+    //    $match: {
+    //      cast: { $elemMatch: { $exists: true } },
+    //      directors: { $elemMatch: { $exists: true } },
+    //      writers: { $elemMatch: { $exists: true } }
+    //    }
+    //  },
+    //  {
+    //    $project:
+    //    {
+    //    _id: 0,
+    //      cast: 1,
+    //      directors: 1,
+    //      writers:
+    //        {
+    //        $map:
+    //            {
+    //            input: "$writers",
+    //          as: "writer",
+    //          in: {
+    //            $arrayElemAt:
+    //                    [
+    //              {
+    //                $split:["$$writer", " ("]
+    //              },
+    //              0
+    //            ]
+    //          }
+    //            }
+    //        }
+    //    }
+    //},
+    //  {
+    //    $project:
+    //    {
+    //    labor_of_love:
+    //        {
+    //        $gt:
+    //            [
+    //          { $size: { $setIntersection:["$cast", "$directors", "$writers"] } },
+    //          0
+    //        ]
+    //      }
+    //    }
+    //},
+    //  {
+    //    $match: { labor_of_love: true }
+    //},
+    //  {
+    //    $count: "labors of love"
+    //  }
+    //])
+    #endregion
+
+
+    #region $geoNear Koordinta göre işlem
+    //$geoNear : {
+    //    near : {type : "Point", coordinates : [-73.98345345345, 40.757323423423]},
+    //    distanceField : "distancefromMongoDB",
+    //    minDistance : <Optional, in meters>,
+    //    maxDistance : <Optional, in meters>,
+    //    query : <Optional, allows querying source documents>,
+    //    query : {type : "Hospital"}, // query sınırlama yaparak aramamıza yarıyor.bu da örneği
+    //    includeLocs : <Optional, used to identify which location was used>,
+    //    limit : <Optional, the max number of documents to return>,
+    //    num : <Optional, same as limit>,
+    //    spherical : true,
+    //    distanceMultiplier : <Optional, the factor to multiply all distances>
+    //    }
+    // spherical true verdiğimizde sonuç m cinsinden false ise radyant cinsinden döner
+
+    #endregion
+
+
+    #region Cursor-like stages
+
+    //$limit : {<integer>}
+    //$skip: {<integer>}
+    //$count: {<name we want the count called>}
+    //$sort: {<field  we want to sort on>:<integer, direction to sort>}
+
+    //db.solarSystem.find({}, {_id: 0, name:1, numberOfMoons: 1}).sort({ numberOfMoons: -1}).pretty()
+    //db.solarSystem.find({}, {_id: 0, name:1, numberOfMoons: 1}).limit(5).pretty()
+
+
+    //db.solarSystem.aggregate([{
+    //    $project : {
+    //        _id : 0,
+    //        name : 1
+    //        numberOfMoons : 1
+    //        }
+    //    },
+    //{
+    //    $skip: 1
+    //}])
+
+
+    //db.solarSystem.aggregate([{
+    //    $project: {
+    //        _id: 0,
+    //        name: 1
+    //        numberOfMoons: 1
+    //        }
+    //    },
+    //    {
+    //        $limit: 5
+    //    }])
+
+    //db.solarSystem.aggregate([{
+    //    $project: {
+    //        _id: 0,
+    //        name: 1
+    //        numberOfMoons: 1
+    //        }
+    //    },
+    //    {
+    //        $sort:{hasMagneticField: -1, numberOfMoons: -1}//-1 azalan desc 1 artan asc
+    //    }])
+
+
+    //db.solarSystem.aggregate([{
+    //    $project: {
+    //        _id: 0,
+    //        name: 1
+    //        numberOfMoons: 1
+    //        }
+    //    },
+    //    {
+    //        $sort:{hasMagneticField: -1, numberOfMoons: -1}
+    //    }], {allowDiskUse:true})// Normalde db yormamak için 100 mb veriye kadar sınır var
+    //  Ancak true yaparsak hafızaya limit koymadan bu işlemi yapabiliyoruz.
+    //  Bu sadece sort için geçerli
+    #endregion
+
+
+    #region $sample Stage
+
+    #endregion
+
+
+    #region MyRegion
+
+    #endregion
+
+
+    #region MyRegion
+
+    #endregion
+
+
+    #region MyRegion
+
+    #endregion
+
     #endregion
 
 
