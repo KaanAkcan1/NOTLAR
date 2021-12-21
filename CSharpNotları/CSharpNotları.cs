@@ -135,15 +135,55 @@
 
         void StringTürü()
         {
-            //Stringin değişken adı stackte, Değeri Heapte tutulur
-            //String referans türü bir değişkendir ve özünde char dizisidir.
+            var metin = "Dolu Kadehi Ters Tut";
+            //Stringin değişken adı stackte, Değeri Heapte tutulur nesne türü olduğu için.
+            //String referans türü bir değişkendir ve özünde char dizisidir. Yani nesnedir.
+            #region @ Verbatim operatörü
+            string ani = @"Hava çok ""güzel""";// Başına @ koyarak " gibi özel operatörleri çiftleyip özelliklerinden kurtarıp metinleştiriyoruz
+            // Hava çok "güzel"çıktısını verir
+            ani = @"Selam
+                   Bebek";//Normalde alt alta string giremeyiz. Ama @ sayesinde yapabiliyoruz.Enterı uygular.
+            string kele = "Kelebek";//İnterpolution ile bir kullanırken önce @ sonra $ yazılmalı
+            ani = @$"Ben
+                {kele}";//Böyle kullanımda \n gibi ifadeleri metin olarak algılar ayrıca yazarken tab kullandığımız için onuda
+                        //ve enter ı da uygular
+            #endregion
+            #region Compare
+            int sonnuc = string.Compare(metin, "a");// eğer ikisi birbirine eşitse 0
+            //metin soldaki sağdakinden alfabetik olarak büyükse 1
+            //alfabetik olarak küçükse -1 döner. Karakter sayısı değil fihristik şekilde.
+            #endregion
+            #region CompareTo
+            sonnuc = metin.CompareTo("asdasd");//Containin aynısı sadece kullanılışı farklı.
+            #endregion
+            #region Contains
+            bool sonuc = metin.Contains("Ters");
+            #endregion
+            #region EndsWith
+            sonuc = metin.EndsWith("Tut");
+            #endregion
+            #region Equals
+            sonuc = metin.Equals("Dolu Kadehi Ters Tut");
+            #endregion
+            #region Escape Kaçış Karakterleri
+            // \ karakteri sonraki ifadenin özel karkter olmasını engeller. " falan içine yazdırabilmek için
+            // \o Dosya yada veri kanalının bitişini belitrmek için kullanılır
+            // \a Bip sesini çıkaran karakterdir
+            // \b Backspace-Geri-Önceki karakteri silme
+            // \t tab
+            // \r Satırbaşı
+            // \n Bir alt satıra iner
+            // \v Dikey tab
+            // \f Sayfa ilerleme
+            // \' Tek tırnak
+            // \" Çift tırnak
 
-            #region Null-Empty
-            string ai= string.Empty;
-            //Eğer ki string null ise bu heapte herhangi bir alan kullanmıyor demektir
-            //Empty de değeri yok ama alanı kullanıyor
-            //Default değerlerin olduğu durumlar empty olarak geçer.
-            //Null olan değer ile işlem yapmaya çalışınca rt hata alırken empty iken olmaz
+            #endregion
+            #region IndexOf
+            sonnuc = metin.IndexOf("Kadehi");//5 döner. İlk eşleşen değerin indexini döndürür
+            #endregion
+            #region Insert
+            metin = metin.Insert(2,"oo");//Dooolu Kadehi Ters Tut çıktısı verir
             #endregion
             #region IsNullOrEmpty
             string.IsNullOrEmpty(ai);
@@ -151,8 +191,60 @@
             #region IsNullOrWhiteSpace
             string.IsNullOrWhiteSpace(ai);
             #endregion
+            #region Null-Empty
+            string ai = string.Empty;
+            //Eğer ki string null ise bu heapte herhangi bir alan kullanmıyor demektir
+            //Empty de değeri yok ama alanı kullanıyor
+            //Default değerlerin olduğu durumlar empty olarak geçer.
+            //Null olan değer ile işlem yapmaya çalışınca rt hata alırken empty iken olmaz
+            #endregion
+            #region Remove
+            metin = metin.Remove(4);//Kadehi Ters Tut çıktısı verir
+            metin = metin.Remove(4, 6);//4.indexten başla 6 karakter sil
+            #endregion
+            #region Replace
+            metin = metin.Replace("K", "k").Replace("T","t");//Dolu kadehi ters tut çıktısı verir
+            #endregion
+            #region Split
+            var zzz = metin.Split(" ");//Boşluklardan stringi diziye parçalar
+            zzz = metin.Split(' ', 'o');//Boşluk vr o lardan ayırır.
+            #endregion
+            #region StartsWith
+            sonuc = metin.StartsWith("Dolu");
+            #endregion
+            #region Substring
+            metin = metin.Substring(5);//5.indexten sonuna kadar charların oluşturduğu stringi verir
+            metin = metin.Substring(5, 5);//5. indexten başlayıp 5 karakteri alıp dönüş yapar
+            #endregion
+            #region String Formantlandırma
 
+            #region string.Format
+            string.Format("{0}a{2}e{1}", "k", "m", "l"); //kalem  çıktısı verir
+            #endregion
+            #region $string Interpolation yöntemi en yeni ve iyisi
+            var kstring = "k";
+            var lstring = "l";
+            var mstring="m";
+            var oss = $"{kstring}a{lstring}e{mstring}";
+            //string interpolution kullanırken {} kullanmak için {{}} yapmamız lazım
+            #endregion
 
+            #endregion
+            #region ToLower
+            metin = metin.ToLower();
+            #endregion
+            #region ToUpper
+            metin = metin.ToUpper();
+            #endregion
+            #region Trim
+            metin = metin.Trim();//Başında ve sonunda boşluk varsa siliyor
+            #endregion
+            #region TrimEnd
+            metin = metin.TrimEnd();//sonundakini trimler
+            #endregion
+            #region TrimStart
+            metin = metin.TrimStart();//başındakini
+            #endregion
         }
 
         void SwitchYöntemleri()
