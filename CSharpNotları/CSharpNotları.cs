@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 using System.Text;
+using System.Text.RegularExpressions;
 namespace CSharpNotları
 {
     public class CSharpNotları
@@ -162,7 +163,34 @@ namespace CSharpNotları
 
         void RegularExpressions()
         {
+            #region ^Operatörü
+            //Satır başının istenen ifade ile başlamasını sağlar
+            string text = "999989554";
+            Regex regex = new Regex("^9");
+            Regex regex1 = new Regex("^99");
+            Match match = regex.Match(text);
+            var booleanaa = match.Success;
+            #endregion
+            #region \Operatörü
+            //\D: Metinsel değerin ilgili yerinde rakam olmayan tek bir karakterin olması gerektiği belirtilir.
+            //\d: Metinsel değerin ilgili yerinde rakam olan tek bir karakterin olması gerektiği belirtilir.
+            // Alfanümerik karakterler: a-z A-Z 0-9
+            //\W: Metinsel değerin ilgili yerinde alfanümerik olmayan karakterin olması gerektiği belirtilir.
+            //\w: Metinsel değerin ilgili yerinde alfanümerik olan karakterin olması gerektiği belirtilir.
+            //\S: Metinsel değerin ilgili yerinde boşluk karakterleri dışında herhangi bir karakterin olamayacağını belirtilir.
+            //\s: Metinsel değerin ilgili yerinde boşluk karakterlerinin olacağı belirtilir.
 
+            //9ile başlayan, ikinci karakteri herhangi bir sayı olan ve 3. karakteri boşluk olmayan bir düzenli ifade
+            Regex regex2 = new Regex(@"^9\d\S");//İndexe göre ilerliyor
+            match = regex.Match(text);
+            #endregion
+            #region +Operatörü
+            //9ile başlayan, arada herhangi bir sayısal değeri olan ve son karakteri boşluk olmayan bir düzenli ifade
+            Regex regex3 = new Regex(@"^9\d+\S");//İkinci ve fazlası sayısal değer oldu
+            #endregion
+            #region |Operatörü
+            Regex regex4 = new Regex(@"a|b|c");//a yada b yada c ile olan
+            #endregion
         }
 
         void SpanVeMemoryTürleri()
