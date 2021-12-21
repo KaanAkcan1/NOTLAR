@@ -1,4 +1,6 @@
-﻿namespace CSharpNotları
+﻿using Microsoft.Extensions.Primitives;
+using System.Text;
+namespace CSharpNotları
 {
     public class CSharpNotları
     {
@@ -11,40 +13,6 @@
             //C#’ta eğer operatörler eşit öncelikliyse, soldan sağa işlem yapılır.
             //(x++, x--) > (+(pozitiflik), -(negatiflik), !, ~, ++x, --x, (Type)x) > (*,/,%) > (>>,>>>,<<) > (>,>=,<,<=, instanceof) > (==,!=) > (&) > (^) > (|) > (&&) > (||) > (?:) > (=, op =)
             #endregion
-        }
-
-        void Başlıksızlar()
-        {
-            var a = ";";
-            int @int;//@operatörü ile verilen isimlemeler sayesinde anlamlı keywordları kullanabiliyoruz
-            dynamic x;//Bu şekilde tanımlama ile runtime a kadar x değişkeninin türü bilinmez. Program çalışınca türünü belirler. Var gibi ama vardan bir aşama sonra türü belirleniyor
-                      //dynamic ile kararlı bir türe sahip değil.Değişkene önce string sonra int türü verebiliriz.
-            a.GetType();// ile Türünü öğreniyoruz
-        }
-
-        void PatternYöntemleri()
-        {
-            object x = "Kaan";
-            #region is pattern
-            if (x is string a)//a="Kaan" stringi oldu. Objedeki nesnenin cinsi string ise onu stringe çevirip a ya atadık.
-            {
-                var y = a;//a sadece ifin içinde kullanmalıyız.iften çıkınca kullanınca hata gösterir.
-            }
-            #endregion
-            #region constant pattern//object dışında işlem de yapabilir
-            object b = 5;
-            if (b is 5)//(b==5) gibi çalışır
-                b = 3;
-            #endregion
-            #region var pattern
-            if (x is var c)//c="Kaan" oldu. Objedeki nesnenin cinsi ne ise onu var olarak ona çevirip a ya atadık.
-                c = 5;
-            #endregion
-            #region  not patern
-            if (x is not "Kaaan")//değilse gibi
-                x = "Kaaan";
-            #endregion
-
         }
 
         void ArrayYöntemleri()
@@ -120,8 +88,42 @@
             #region Sort Metodu
             Array.Sort(a); // Küçükten büyüğe yada alfabetik sıralıyor
             #endregion
-            
 
+
+        }
+
+        void ArrayVeriselPerformans()
+        {
+            #region ArraySegment
+            int[] sayilar = { 10, 20, 30, 40, 50, 60, 70, 80, 90 };
+            // Dizinin belirli bir kısmı lazım olduğunda onun için başka bir dizi yaratıp onu
+            //diğerinin içine atmak çok maaliyetli olur ram için. Bu yüzden kullanılır
+            ArraySegment<int> segment1 = new ArraySegment<int>(sayilar);
+            ArraySegment<int> segment2 = new ArraySegment<int>(sayilar, 2, 5);//30,40,50
+            ArraySegment<int> segment3 = segment1.Slice(0, 3);//10,20,30
+            ArraySegment<int> segment4 = segment1.Slice(4, 7);
+            #endregion
+            #region StringSegment
+            var text = "Yüzyüzeyken Konuşuruz";
+            StringSegment segment5 = new StringSegment(text);
+            StringSegment segment6 = new StringSegment(text, 2, 5);//2.indexten başlayıp 5 karakter alıyoruz
+
+            #endregion
+            #region StringBuilder
+            //StringBuilder + operatöründen daha az maaliyetli ve hızlı birleştirme yapan bir sınıftır
+            StringBuilder builder = new StringBuilder();
+            builder.Append("Merhaba").Append(" ").Append("Dünya!");
+            Console.WriteLine(builder.ToString());
+            #endregion
+        }
+
+        void Başlıksızlar()
+        {
+            var a = ";";
+            int @int;//@operatörü ile verilen isimlemeler sayesinde anlamlı keywordları kullanabiliyoruz
+            dynamic x;//Bu şekilde tanımlama ile runtime a kadar x değişkeninin türü bilinmez. Program çalışınca türünü belirler. Var gibi ama vardan bir aşama sonra türü belirleniyor
+                      //dynamic ile kararlı bir türe sahip değil.Değişkene önce string sonra int türü verebiliriz.
+            a.GetType();// ile Türünü öğreniyoruz
         }
 
         void ForYöntemleri()
@@ -130,6 +132,51 @@
             for (int i = 0, i2 = 0; i < 10 && i2 < 5; i2++, i++)
             { }
             #endregion
+
+        }
+
+        void PatternYöntemleri()
+        {
+            object x = "Kaan";
+            #region is pattern
+            if (x is string a)//a="Kaan" stringi oldu. Objedeki nesnenin cinsi string ise onu stringe çevirip a ya atadık.
+            {
+                var y = a;//a sadece ifin içinde kullanmalıyız.iften çıkınca kullanınca hata gösterir.
+            }
+            #endregion
+            #region constant pattern//object dışında işlem de yapabilir
+            object b = 5;
+            if (b is 5)//(b==5) gibi çalışır
+                b = 3;
+            #endregion
+            #region var pattern
+            if (x is var c)//c="Kaan" oldu. Objedeki nesnenin cinsi ne ise onu var olarak ona çevirip a ya atadık.
+                c = 5;
+            #endregion
+            #region  not patern
+            if (x is not "Kaaan")//değilse gibi
+                x = "Kaaan";
+            #endregion
+
+        }    
+
+        void RegularExpressions()
+        {
+
+        }
+
+        void SpanVeMemoryTürleri()
+        {
+            //Bellek üzerinde belirli bir alanı temsil ederek işlemler gerçekleştirmemizi sağlayan bir struct'tır
+            //Span: Heap'ta tahsis edilememe, object, dynamic yahut interface türleri aracılığıyla referans edilememe
+            //yahut bir class içerisinde  field veya property olarak tanımlanamama gibi kısıtlamaları vardır.
+            //Memory türü bu kısıtlamalardan etkilenmeyen bir span gibi düşünebiliriz
+            int[] sayilar2 = { 10, 20, 30, 40, 50, 60, 70, 80, 90 };
+            string text2 = "Bye Bye Happiness";
+            Span<int> span = new Span<int>(sayilar2);
+            Span<int> span1 = new Span<int>(sayilar2, 3,5);//3.indexten başlayıp 5 karakter alır
+            Span<int> span2 = sayilar2.AsSpan(3, 5);
+            ReadOnlySpan<char> span3 = text2.AsSpan(3,5);//stringde çalışırken ReadOnlySpan kullanmak zorundayız
 
         }
 
