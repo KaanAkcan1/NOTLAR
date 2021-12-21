@@ -52,26 +52,47 @@
             int[] a = { 1, 2, 3, 4, 5, 6, 7, 8 };
             int[] b = { '1', '2', '3', '4' };
 
+            #region CreateInstance Metodu
+            var h = Array.CreateInstance(typeof(int), 5);//Array oluşturmaya yarar. Aslen array define buradan yapılıyor
+            var i = Array.CreateInstance(typeof(int), 5, 2, 3);//Array  3 ranklı.1inci 5 2nci 2 3üncü 3 lengthe sahip 
+            #endregion
             #region Clear Metodu
             Array.Clear(a, 0, a.Length);//a dizisinin 0.elemanından başlayıp son a.Length eleman kadar değerlerini default atar.
             #endregion 
             #region Copy Metodu
             Array.Copy(a, b, 3);//a dizisinden b dizisine 3 eleman kopyala
             #endregion
+            #region Çok Boyutlu Dizilerde Varyasyonla Atama İşlemi
+            int[,] sayılar =
+            {
+                { 1, 2, 3,},
+                { 4, 5, 6,},
+                { 5, 6, 7,}
+            };
+            #endregion
+            #region Düzensiz Diziler
+            int[][] sayilar = new int[3][];
+            sayilar[0] = new int[3] { 3, 4, 5 };
+            sayilar[1] = new int[5] { 1, 2, 3, 4, 5 };
+            sayilar[2] = new int[6] { 1, 2, 3, 4, 5, 6 };
+            #region Length Bulma
+            var z = sayilar[0].Length + sayilar[1].Length + sayilar[2].Length;
+            #endregion
+            #region İç içe döngüde çalışma
+            for (int q = 0; q < sayilar.Length; q++)
+            {
+                for (int w = 0; w < sayilar[q].Length; w++)
+                {
+                    Console.WriteLine(sayilar[q][w]);
+                }
+            }
+            #endregion
+
+            #endregion
             #region IndexOf Metodu
             Array.IndexOf(a, 4);//a dizisinde + ü arayıp varsa indexini yoksa -1 dönderiyor
             Array.IndexOf(a, 4, 1, 2);//1.elemandan başlayıp 2 elemana bakar 
-            #endregion
-            #region Reverse Metodu
-            Array.Reverse(a);//Diziyi tersine çevirir
-            #endregion
-            #region Sort Metodu
-            Array.Sort(a); // Küçükten büyüğe yada alfabetik sıralıyor
-            #endregion
-            #region CreateInstance Metodu
-            var h = Array.CreateInstance(typeof(int), 5);//Array oluşturmaya yarar. Aslen array define buradan yapılıyor
-            var i = Array.CreateInstance(typeof(int), 5, 2, 3);//Array  3 ranklı.1inci 5 2nci 2 3üncü 3 lengthe sahip 
-            #endregion
+            #endregion            
             #region IsReadOnly Property
             var c = a.IsReadOnly;//sadece okunabilir olup olmadığını bize bildirir
             #endregion
@@ -93,11 +114,14 @@
             range = ^7..^3;// sağdan 7.  ile 3+1.  arası ve bu değerlin bulunduğu arrayi döndürür => 2,3,4,5
             var j = a[range];
             #endregion
-
-
-            #region Clear Metodu
-
+            #region Reverse Metodu
+            Array.Reverse(a);//Diziyi tersine çevirir
             #endregion
+            #region Sort Metodu
+            Array.Sort(a); // Küçükten büyüğe yada alfabetik sıralıyor
+            #endregion
+            
+
         }
 
         void ForYöntemleri()
@@ -106,6 +130,28 @@
             for (int i = 0, i2 = 0; i < 10 && i2 < 5; i2++, i++)
             { }
             #endregion
+
+        }
+
+        void StringTürü()
+        {
+            //Stringin değişken adı stackte, Değeri Heapte tutulur
+            //String referans türü bir değişkendir ve özünde char dizisidir.
+
+            #region Null-Empty
+            string ai= string.Empty;
+            //Eğer ki string null ise bu heapte herhangi bir alan kullanmıyor demektir
+            //Empty de değeri yok ama alanı kullanıyor
+            //Default değerlerin olduğu durumlar empty olarak geçer.
+            //Null olan değer ile işlem yapmaya çalışınca rt hata alırken empty iken olmaz
+            #endregion
+            #region IsNullOrEmpty
+            string.IsNullOrEmpty(ai);
+            #endregion
+            #region IsNullOrWhiteSpace
+            string.IsNullOrWhiteSpace(ai);
+            #endregion
+
 
         }
 
