@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections;
 namespace CSharpNotları
 {
     public class CSharpNotları
@@ -118,6 +119,23 @@ namespace CSharpNotları
             #endregion
         }
 
+        void ArrayListKoleksiyonu()
+        {
+            #region Tanımlama, Değer Atama ve Kullanma
+            ArrayList _yaslar = new ArrayList();
+            _yaslar.Add(23);
+            var azax = (int)_yaslar[0];
+            #endregion
+            #region İnitializers
+            ArrayList arrayList = new ArrayList()
+            {
+                "Ahmet",
+                22,
+                "Wtf"
+            };
+            #endregion
+        }
+
         void Başlıksızlar()
         {
             var a = ";";
@@ -127,12 +145,45 @@ namespace CSharpNotları
             a.GetType();// ile Türünü öğreniyoruz
         }
 
+        void DateTimeStruct()
+        {
+            #region Now
+            DateTime dateTime = DateTime.Now;//Yıldan başlayıp saniyeye kadar o anın tarihini verir
+            #endregion
+            #region Today
+            dateTime = DateTime.Today;//GünAyYıl bilgisi döndürür
+            #endregion
+            #region Compare
+            DateTime tarih1 = new DateTime(2021, 01, 01);
+            DateTime tarih2 = new DateTime(2022, 01, 01);
+            int result = DateTime.Compare(tarih1, tarih2);//result=-1 tarih1<tarih2
+                                                          //result =0 ise eşitler result=1 ise tarih1>tarih2
+            #endregion
+            #region AddDays,AddHours,AddMonths,AddYears,AddMiliseconds
+            DateTime.Now.AddYears(1453);
+            #endregion
+            #region TimeSpan
+            TimeSpan span = tarih2 - tarih1;
+            var a = span.Days;//İki zaman arasındaki farkı farklı çeşitlerde öğrenmemize yarar
+            #endregion
+        }
+
         void ForYöntemleri()
         {
             #region ikli for döngüsü
             for (int i = 0, i2 = 0; i < 10 && i2 < 5; i2++, i++)
             { }
             #endregion
+
+        }
+
+        void ForEachİterasyonuYöntemleri()
+        {
+            //Foreach döngü değil iterasyondur. Foreach içinde collectiona etki edicek kodlar çalıştırılamaz.              
+        }
+
+        void Methodlar()
+        {
 
         }
 
@@ -160,6 +211,19 @@ namespace CSharpNotları
             #endregion
 
         }    
+
+        void RandomSınıfı()
+        {
+            Random random = new Random();
+            #region Next Fonksiyonu
+            random.Next();//0-sonsuz
+            random.Next(100);//100 e kadar.!00 dahil değil
+            random.Next(50,100);//50 dahil 100 e kadar.100 dahil değel
+            #endregion
+            #region NextDouble Fonksiyonu
+            random.NextDouble();//0 ile 1 arasında
+            #endregion
+        }
 
         void RegularExpressions()
         {
@@ -191,6 +255,39 @@ namespace CSharpNotları
             #region |Operatörü
             Regex regex4 = new Regex(@"a|b|c");//a yada b yada c ile olan
             #endregion
+            #region {n}Operatörü
+            //507-6111600
+            Regex regex5 = new Regex(@"\d{3} -\d{7}");
+            #endregion
+            #region ?Operatörü
+            //Sağına geldiği ifadenin en fazla 1 tane olabileceğini gösterir
+            Regex regex6 = new Regex(@"\d{3}B?A");
+            //3 tane rakam En fazla bir B en son da A
+            #endregion
+            #region .Operatörü
+            // \n karakteri dışında herhangi bir karakter bulunabilir
+            Regex regex7 = new Regex(@"\d{3}.A");
+            #endregion
+            #region \b \B Operatörü
+            //\B: Bu ifade ile kelimenin başında yada sonunda olmaması gereken karakterler belirtilir.
+            //\b: Bu ifade ile kelimenin belirtilen karakter ile sonlanmasını sağlar
+            Regex regex8 = new Regex(@"\d{3}dır\B");
+            #endregion
+            #region [n]Operatörü
+            //Metinsel ifadede karakter aralığını belirler. Ayrıca özelkarakterlerin yerinde yazılmasını da ifade eder.
+            Regex regex9 = new Regex(@"\d{3}[A-E]");//123C true, 251F false
+            Regex regex10 = new Regex(@"[(]\d{3}[)]\s\d{3}\s\d{2}\s\d{2}"); //(507) 611 16 00 çıktısını doğrular
+            #endregion
+            #region MatchSınıfı Özellikleri
+            Match match1 = regex10.Match(text);
+            //match1.Success => True False
+            //match1.Value => text i dönderir
+            //match1.Index => Kaçıncı indexten doğrılamaya başladık
+            //match1.Length => Kaç eleman doğruladık
+
+
+            #endregion
+
         }
 
         void SpanVeMemoryTürleri()
@@ -229,7 +326,7 @@ namespace CSharpNotları
             //alfabetik olarak küçükse -1 döner. Karakter sayısı değil fihristik şekilde.
             #endregion
             #region CompareTo
-            sonnuc = metin.CompareTo("asdasd");//Containin aynısı sadece kullanılışı farklı.
+            sonnuc = metin.CompareTo("asdasd");//Compare'in aynısı sadece kullanılışı farklı.
             #endregion
             #region Contains
             bool sonuc = metin.Contains("Ters");
@@ -261,13 +358,14 @@ namespace CSharpNotları
             metin = metin.Insert(2,"oo");//Dooolu Kadehi Ters Tut çıktısı verir
             #endregion
             #region IsNullOrEmpty
+            var ai = "ai";
             string.IsNullOrEmpty(ai);
             #endregion
             #region IsNullOrWhiteSpace
             string.IsNullOrWhiteSpace(ai);
             #endregion
             #region Null-Empty
-            string ai = string.Empty;
+            ai = string.Empty;
             //Eğer ki string null ise bu heapte herhangi bir alan kullanmıyor demektir
             //Empty de değeri yok ama alanı kullanıyor
             //Default değerlerin olduğu durumlar empty olarak geçer.

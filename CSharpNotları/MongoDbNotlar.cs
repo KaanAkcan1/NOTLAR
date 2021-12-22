@@ -27,11 +27,11 @@ namespace CSharpNotları
         //                            { "src_airport": "KZN" }
         //                          ] },
         //                  {
-        //"$or" :[ { "airplane": "CR2" },
+        //                  "$or" :[ { "airplane": "CR2" },
         //                             { "airplane": "A81" } ] }
         //                 ]}).pretty()
         //nor 
-        //        not
+        //not
         //      db.inspections.find(
         //{ "$or": [ { "date": "Feb 20 2015" },
         //           { "date": "Feb 21 2015" } ],
@@ -270,21 +270,21 @@ namespace CSharpNotları
         #region MongoDotNet
 
         #region Using driver
-        //Create a client that points to your data store
-        var some_uri_to_MongoDb = MongoClientSettings.FromConnectionString("mongodb+srv://kaan:111222333@mflix.ulybz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-        //some_uri_to_MongoDb was shown in Connect>ChooseaConnectionMethod
-        var client = new MongoClient(some_uri_to_MongoDb);
+        ////Create a client that points to your data store
+        //var some_uri_to_MongoDb = MongoClientSettings.FromConnectionString("mongodb+srv://kaan:111222333@mflix.ulybz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+        ////some_uri_to_MongoDb was shown in Connect>ChooseaConnectionMethod
+        //var client = new MongoClient(some_uri_to_MongoDb);
 
 
 
-        //Sepecify the database and collection u want to use
-        var db = client.GetDatabase("sample_mflix");//database name
-        var collection = db.GetCollection<BsonDocument>("movies");//collection name
+        ////Sepecify the database and collection u want to use
+        //var db = client.GetDatabase("sample_mflix");//database name
+        //var collection = db.GetCollection<BsonDocument>("movies");//collection name
 
-        //using example
-        var result = collection
-            .Find(new BsonDocument("title", "The Princess Bride"))
-            .FirstOrDefault();
+        ////using example
+        //var result = collection
+        //    .Find(new BsonDocument("title", "The Princess Bride"))
+        //    .FirstOrDefault();
 
         #endregion
 
@@ -347,35 +347,35 @@ namespace CSharpNotları
 
         #endregion
         #region Delete Uygulama
-        public async Task<Movie> DeleteCommentAsync(ObjectId movieId, ObjectId commentId,
-       User user, CancellationToken cancellationToken = default)
-        {
-            var result = _commentsCollection.DeleteOne(
-                  Builders<Comment>.Filter.Where(
-                     c => c.MovieId == movieId
-                           && c.Id == commentId
-                           && c.Email == user.Email));
+       // public async Task<Movie> DeleteCommentAsync(ObjectId movieId, ObjectId commentId,
+       //User user, CancellationToken cancellationToken = default)
+       // {
+       //     var result = _commentsCollection.DeleteOne(
+       //           Builders<Comment>.Filter.Where(
+       //              c => c.MovieId == movieId
+       //                    && c.Id == commentId
+       //                    && c.Email == user.Email));
 
-            return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
-        }
+       //     return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
+       // }
         #endregion
 
 
         #region Basic Reads
-        var filter = new BsonDocument("title", "The Princess Bride");
+        //var filter = new BsonDocument("title", "The Princess Bride");
 
-        var betterFilter = Builders<Movie>.Filter.Eq(m => m.Title, "The Princess Bride");
+        //var betterFilter = Builders<Movie>.Filter.Eq(m => m.Title, "The Princess Bride");
 
-        var projectionFilter = Builders<Movie>.Projection
-            .Include(m => m.Title)
-            .Include(m => m.Year)
-            .Include(m => m.Cast)
-            .Exlude(m => m.Id);
+        //var projectionFilter = Builders<Movie>.Projection
+        //    .Include(m => m.Title)
+        //    .Include(m => m.Year)
+        //    .Include(m => m.Cast)
+        //    .Exlude(m => m.Id);
 
-        var movieProjected = await _moviesCollection
-            .Find<Movie>(betterFilter)
-            .Project<Movie>(projectionFilter)
-            .FirstOrDefaultAsync();
+        //var movieProjected = await _moviesCollection
+        //    .Find<Movie>(betterFilter)
+        //    .Project<Movie>(projectionFilter)
+        //    .FirstOrDefaultAsync();
 
 
         #endregion
@@ -383,33 +383,33 @@ namespace CSharpNotları
 
         #region Advanced Read
 
-        var movies = await _moviesCollection.Find<Movie>(filter)
-            .Limit(5)
-            .ToListAsync();
+        //var movies = await _moviesCollection.Find<Movie>(filter)
+        //    .Limit(5)
+        //    .ToListAsync();
 
-        var movies = await _moviesCollection.Find<Movie>(Builders<Movie>.Filter.Empty)
-            .Sort(new BsonDocument("year", 1))
-            .Limit(4)
-            .Skip(12)
-            .ToListAsync();
-
-
-    return await _moviesCollection
-                          .Find(m => m.Countries.Any(c => countries.Contains(c)))
-                          .SortByDescending(m => m.Title)
-                          .Project<MovieByCountryProjection>(Builders<Movie>
-                                                                            .Projection
-                                                                                .Include(x => x.Title)
-                                                                                .Include(x => x.Id))
-                          .ToListAsync(cancellationToken);
+        //var movies = await _moviesCollection.Find<Movie>(Builders<Movie>.Filter.Empty)
+        //    .Sort(new BsonDocument("year", 1))
+        //    .Limit(4)
+        //    .Skip(12)
+        //    .ToListAsync();
 
 
-     return await _moviesCollection
-                .Find(Builders<Movie>.Filter.In("genres", genres))
-                .Limit(limit)
-                .Skip(page* limit)
-                .Sort(sort)
-                .ToListAsync(cancellationToken);
+    //return await _moviesCollection
+    //                      .Find(m => m.Countries.Any(c => countries.Contains(c)))
+    //                      .SortByDescending(m => m.Title)
+    //                      .Project<MovieByCountryProjection>(Builders<Movie>
+    //                                                                        .Projection
+    //                                                                            .Include(x => x.Title)
+    //                                                                            .Include(x => x.Id))
+    //                      .ToListAsync(cancellationToken);
+
+
+    // return await _moviesCollection
+    //            .Find(Builders<Movie>.Filter.In("genres", genres))
+    //            .Limit(limit)
+    //            .Skip(page* limit)
+    //            .Sort(sort)
+    //            .ToListAsync(cancellationToken);
 
         #endregion
 
@@ -466,34 +466,34 @@ namespace CSharpNotları
 
         //another Example
         // I match movies by cast members
-        var matchStage = new BsonDocument("$match",
-            new BsonDocument("cast",
-                new BsonDocument("$in",
-                    new BsonArray { cast })));
+    //    var matchStage = new BsonDocument("$match",
+    //        new BsonDocument("cast",
+    //            new BsonDocument("$in",
+    //                new BsonArray { cast })));
 
-        //I limit the number of results
-        var limitStage = new BsonDocument("$limit", DefaultMoviesPerPage);
+    //    //I limit the number of results
+    //    var limitStage = new BsonDocument("$limit", DefaultMoviesPerPage);
 
-        //I sort the results by the number of reviewers, descending
-        var sortStage = new BsonDocument("$sort",
-            new BsonDocument("tomatoes.viewer.numReviews", -1));
+    //    //I sort the results by the number of reviewers, descending
+    //    var sortStage = new BsonDocument("$sort",
+    //        new BsonDocument("tomatoes.viewer.numReviews", -1));
 
-        // In conjunction with limitStage, I enable pagination
-        var skipStage = new BsonDocument("$skip", DefaultMoviesPerPage * page);
+    //    // In conjunction with limitStage, I enable pagination
+    //    var skipStage = new BsonDocument("$skip", DefaultMoviesPerPage * page);
 
-        // I build the facets
-        var facetStage = BuildFacetStage();
+    //    // I build the facets
+    //    var facetStage = BuildFacetStage();
 
-        // I am the pipeline that runs all of the stages
-        var pipeline = new[]
-        {
-                    matchStage,
-                    sortStage,
-                    skipStage,
-                    limitStage,
-                    facetStage
-                    // add the remaining stages in the correct order
-    };
+    //    // I am the pipeline that runs all of the stages
+    //    var pipeline = new[]
+    //    {
+    //                matchStage,
+    //                sortStage,
+    //                skipStage,
+    //                limitStage,
+    //                facetStage
+    //                // add the remaining stages in the correct order
+    //};
 
         #endregion
 
@@ -633,128 +633,128 @@ namespace CSharpNotları
 
 
         #region Look Up
-        var filter = new BsonDocument[]
-        {
-        new BsonDocument("$match",
-            new BsonDocument("year",
-                new BsonDocument
-                {
-                    {"gte", 1980},
-                    {"lt", 1990 }
-                })),
-        new BsonDocument("$lookup",
-            new BsonDocument
-            {
-                {"from", "comments"},
-                {"let", new BsonDocument("id", "$_id") },
-                {"pipeline",
-                    new BsonArray
-                    {
-                        new BsonDocument("$match",
-                            new BsonDocument("expr",
-                                new BsonDocument("$eq",
-                                    new BsonArray
-                                    {
-                                        "$movie_id",
-                                        "$$id"
-                                    }))),
-                        new BsonDocument("$count", "count")
-                    } },
-                {"as", "movie_comments" }
-            })
-        };
+        //var filter = new BsonDocument[]
+        //{
+        //new BsonDocument("$match",
+        //    new BsonDocument("year",
+        //        new BsonDocument
+        //        {
+        //            {"gte", 1980},
+        //            {"lt", 1990 }
+        //        })),
+        //new BsonDocument("$lookup",
+        //    new BsonDocument
+        //    {
+        //        {"from", "comments"},
+        //        {"let", new BsonDocument("id", "$_id") },
+        //        {"pipeline",
+        //            new BsonArray
+        //            {
+        //                new BsonDocument("$match",
+        //                    new BsonDocument("expr",
+        //                        new BsonDocument("$eq",
+        //                            new BsonArray
+        //                            {
+        //                                "$movie_id",
+        //                                "$$id"
+        //                            }))),
+        //                new BsonDocument("$count", "count")
+        //            } },
+        //        {"as", "movie_comments" }
+        //    })
+        //};
 
-        var pipeline = PipelineDefinition<Movie, BsonDocument>
-            .Create(filter);
-        var movies = _moviesCollection.Aggregate(pipeline).ToList();
+        //var pipeline = PipelineDefinition<Movie, BsonDocument>
+        //    .Create(filter);
+        //var movies = _moviesCollection.Aggregate(pipeline).ToList();
 
 
 
         //2.Yol
 
-        var movies = _moviesCollection//c commentcollectiondan geliyor.m önceki yerden taşınabiliyor.
-            .Aggregate()
-            .Match(m => (int)m.Year < 1990 && (int)m.Year >= 1980)
-            .Lookup(
-                _commentsCollection, //Verinin alınacağı collection
-                m => m.Id,//Şu anki property id
-                c => c.MovieId, //Comment collectiondaki movie ıd
-                (Movie m) => m.Comments// dönüş tipi ve ismi
-                )
-            .ToList();
+        //var movies = _moviesCollection//c commentcollectiondan geliyor.m önceki yerden taşınabiliyor.
+        //    .Aggregate()
+        //    .Match(m => (int)m.Year < 1990 && (int)m.Year >= 1980)
+        //    .Lookup(
+        //        _commentsCollection, //Verinin alınacağı collection
+        //        m => m.Id,//Şu anki property id
+        //        c => c.MovieId, //Comment collectiondaki movie ıd
+        //        (Movie m) => m.Comments// dönüş tipi ve ismi
+        //        )
+        //    .ToList();
 
 
 
         #endregion
         #region LookUp Uygulama
-        public async Task<Movie> AddCommentAsync(User user, ObjectId movieId, string comment,
-       CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var newComment = new Comment
-                {
-                    Date = DateTime.UtcNow,
-                    Text = comment,
-                    Name = user.Name,
-                    Email = user.Email,
-                    MovieId = movieId
-                };
+       // public async Task<Movie> AddCommentAsync(User user, ObjectId movieId, string comment,
+       //CancellationToken cancellationToken = default)
+       // {
+       //     try
+       //     {
+       //         var newComment = new Comment
+       //         {
+       //             Date = DateTime.UtcNow,
+       //             Text = comment,
+       //             Name = user.Name,
+       //             Email = user.Email,
+       //             MovieId = movieId
+       //         };
 
-                await _commentsCollection.InsertOneAsync(
-                   newComment,
-                   new InsertOneOptions(),
-                   cancellationToken);
+       //         await _commentsCollection.InsertOneAsync(
+       //            newComment,
+       //            new InsertOneOptions(),
+       //            cancellationToken);
 
-                return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
-            }
-            catch
-            {
-                return null;
-            }
-        }
+       //         return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
+       //     }
+       //     catch
+       //     {
+       //         return null;
+       //     }
+       // }
 
-        public async Task<UpdateResult> UpdateCommentAsync(User user,
-           ObjectId movieId, ObjectId commentId, string comment,
-           CancellationToken cancellationToken = default)
-        {
-            return await _commentsCollection.UpdateOneAsync(
-                      Builders<Comment>.Filter.Where(c => c.Id == commentId && c.Email == user.Email),
-                      Builders<Comment>.Update.Set(c => c.Text, comment).Set(c => c.Date, DateTime.UtcNow),
-                      new UpdateOptions { IsUpsert = false },
-                      cancellationToken);
-        }
+       // public async Task<UpdateResult> UpdateCommentAsync(User user,
+       //    ObjectId movieId, ObjectId commentId, string comment,
+       //    CancellationToken cancellationToken = default)
+       // {
+       //     return await _commentsCollection.UpdateOneAsync(
+       //               Builders<Comment>.Filter.Where(c => c.Id == commentId && c.Email == user.Email),
+       //               Builders<Comment>.Update.Set(c => c.Text, comment).Set(c => c.Date, DateTime.UtcNow),
+       //               new UpdateOptions { IsUpsert = false },
+       //               cancellationToken);
+       // }
         #endregion
 
 
         #region Group Örnek Uygulama
-        public async Task<TopCommentsProjection> MostActiveCommentersAsync()
-        {
-            try
-            {
-                List<ReportProjection> result = null;
+        //public async Task<TopCommentsProjection> MostActiveCommentersAsync()
+        //{
+        //    try
+        //    {
+        //        List<ReportProjection> result = null;
 
-                result = await _commentsCollection
-                   .WithReadConcern(ReadConcern.Majority)
-                   .Aggregate()
-                   .Group(new BsonDocument
-                   {
-               {"_id", "$email"},
-               {"count", new BsonDocument("$sum", 1)}
-                   })
-                   .Sort(Builders<BsonDocument>.Sort.Descending("count"))
-                   .Limit(20)
-                   .Project<ReportProjection>(Builders<BsonDocument>.Projection.Include("email").Include("count"))
-                   .ToListAsync();
+        //        result = await _commentsCollection
+        //           .WithReadConcern(ReadConcern.Majority)
+        //           .Aggregate()
+        //           .Group(new BsonDocument
+        //           {
+        //       {"_id", "$email"},
+        //       {"count", new BsonDocument("$sum", 1)}
+        //           })
+        //           .Sort(Builders<BsonDocument>.Sort.Descending("count"))
+        //           .Limit(20)
+        //           .Project<ReportProjection>(Builders<BsonDocument>.Projection.Include("email").Include("count"))
+        //           .ToListAsync();
 
-                return new TopCommentsProjection(result);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                throw;
-            }
-        }
+        //        return new TopCommentsProjection(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex);
+        //        throw;
+        //    }
+        //}
         #endregion
 
 
