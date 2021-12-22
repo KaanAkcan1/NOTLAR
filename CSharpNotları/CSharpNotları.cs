@@ -184,7 +184,27 @@ namespace CSharpNotları
 
         void Methodlar()
         {
-
+            #region Non-Trailing Named Arguments Sırasız değişken girme
+            //Function(c: "asd", a: 12, d: "123", b: 21);
+            #endregion
+            #region In Parameters Parametreyi readonly yapma
+            static void X(in int a)//in ile tanımlama yapınca  daha sonra değerde değişiklik yapamıyoruz
+            {
+                a = 123;
+            }
+            #endregion
+            #region Static method
+            //Local functionlar normalde üst methoddaki değişkenlere erişebiliyor. 
+            //Local functionu static yaparak bu erişimden kurtarabiliriz.
+            #endregion
+            #region Overload Method
+            //void Y(int a)
+            //{ };
+            //void Y(int a,int b)
+            //{ };
+            //Parametre isimleri veya türlerini farklı yaparak overload yapabiliriz
+            //Geri dönüşüm değeri değiştirilemez
+            #endregion
         }
 
         void PatternYöntemleri()
