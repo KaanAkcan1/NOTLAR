@@ -207,6 +207,34 @@ namespace CSharpNotları
             #endregion
         }
 
+        void OutKeywordü()
+        {
+            int X(out int k, int l, out string m)//out ile kullanılan parametreye değer verilemez.Değişken olmalı
+            {//out ile dışarı parametre değeri gönderilebiliyor
+                k = 0;
+                m = "0";
+                return 0;
+            }
+            int _k = 1;
+            string _m = "asd";
+            int n = X(out _k, 22,out _m);
+
+            #region TryParse
+            string a = "123";
+            int.Parse(a);//Normalde bunu kullanır insanlar, ancak değiştirilemez bir a değeri
+            //girdiğimizde kodumuz patlar. Bu yüzden TryPArse methodunu aşşağıdaki gibi kullanırız
+            //Try parse methodu boolean bir sonuç dönderir. O yüzden ifle kullandık.
+            if (int.TryParse(a, out int r))//Dönüşmek istediğimiz değer,Dönüştürülmüş değer
+            {//char.TryParse, bool.TryParse gibi türleri var
+                Console.WriteLine("Dönüşüm gerçekleştirildi.");
+            }
+            else
+            {
+                Console.WriteLine("Dönüşüm gerçekleştirilemedi.");
+            }
+            #endregion
+        }
+
         void PatternYöntemleri()
         {
             object x = "Kaan";
@@ -242,6 +270,28 @@ namespace CSharpNotları
             #endregion
             #region NextDouble Fonksiyonu
             random.NextDouble();//0 ile 1 arasında
+            #endregion
+        }
+
+        void RefKeywordü()
+        {
+            //Deep copy : Normalde assignment yaptığımızda int b=a dediğimizde
+            //b için anın değerinde yeni bir kayıt açılır.Bellekte yer kaplar.
+            //Shallow copy ise değer aynı kalırken onu refere eden değişken sayısını 
+            //arttırır.
+            #region Ref Keywordu
+            int a = 5;//Değer türlü değişkenlerde shallowcopy etmemize olanak sağlar
+            ref int b = ref a;
+            /******/
+            int y = 10;
+            X(ref y);
+            void X(ref int c)
+            {
+                c = 11;
+            }
+            #endregion
+            #region Ref Returns
+
             #endregion
         }
 
