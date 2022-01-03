@@ -5,7 +5,7 @@ using System.Collections;
 namespace CSharpNotları
 {
     public class CSharpNotları
-    {
+    { 
         void AritmetikOperatörYöntemleri()
         {
             #region Açıklamalar
