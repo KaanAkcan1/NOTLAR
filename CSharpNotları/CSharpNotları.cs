@@ -597,10 +597,6 @@ namespace CSharpNotları
             };
             #endregion
 
-
-            #region Clear Metodu
-
-            #endregion
         }
 
         void TryCatchYöntemleri()

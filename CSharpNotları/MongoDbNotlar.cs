@@ -40,7 +40,7 @@ namespace CSharpNotları
         #endregion
 
         #region expr
-        //        db.trips.find({ "$expr": { "$eq": [ "$end station id", "$start station id"]
+        //db.trips.find({ "$expr": { "$eq": [ "$end station id", "$start station id"]
         //    }
         //}).count()
         //     
@@ -53,16 +53,16 @@ namespace CSharpNotları
         #endregion
 
         #region array
-        //        db.listingsAndReviews.find({ "amenities": {
-        //                                                      "$size": 20,
-        //                                                      "$all": [ "Internet", "Wifi",  "Kitchen",
-        //                                                              "Heating", "Family/kid friendly",
-        //                                                              "Washer", "Dryer", "Essentials",
-        //                                                              "Shampoo", "Hangers",
-        //                                                              "Hair dryer", "Iron",
-        //                                                              "Laptop friendly workspace" ]
-        //                                                  }
-        //                                  }).pretty()
+        //db.listingsAndReviews.find({ "amenities": {
+        //                                              "$size": 20,
+        //                                              "$all": [ "Internet", "Wifi",  "Kitchen",
+        //                                                      "Heating", "Family/kid friendly",
+        //                                                      "Washer", "Dryer", "Essentials",
+        //                                                      "Shampoo", "Hangers",
+        //                                                      "Hair dryer", "Iron",
+        //                                                      "Laptop friendly workspace" ]
+        //                                          }
+        //                          }).pretty()
 
 
         //db.listingsAndReviews.find({ "reviews": { "$size":50 },

@@ -84,7 +84,7 @@
 
         #region Inheritance (Kalıtım)
 
-
+        //17.22 ilk video 
 
 
 
