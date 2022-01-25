@@ -2,6 +2,18 @@
 {
     public class DotnetNotlar
     {
+
+        class ÖrnekModel
+        {
+            public int Id { get; set; }
+            public string FirstName { get; set; }
+            public int ListPrice { get; set; }
+            public string Category { get; set; }
+            public string ProductName { get; set; }
+            public int Price { get; set; }
+
+        }
+
         void Dosyaİşlemleri()
         {
             #region İndirtme işlemi için
@@ -33,9 +45,9 @@
             List<FileInfo> fileInfos = new();
             DirectoryInfo directoryInfo = new(path);
             DirectoryInfo[] directoryInfos = directoryInfo.GetDirectories();
-            if(directoryInfos.Any())
+            if (directoryInfos.Any())
             {
-                foreach(DirectoryInfo directory in directoryInfos)
+                foreach (DirectoryInfo directory in directoryInfos)
                 {
                     fileInfos.AddRange(DosyaYazdir(directory.FullName));
                 }
@@ -45,6 +57,23 @@
                 fileInfos.AddRange(directoryInfo.GetFiles());
             }
             return fileInfos;
+        }
+
+        
+        void Linq()
+        {
+            
+            var list = new List<ÖrnekModel>();
+            list.Take(5);                               //En üstten ilk beşini alır
+            list.OrderByDescending(x => x.Id);           //Id ye göre terseten sıralar
+            list.Select(u => new { u.Id,u.FirstName });   //listeyi Id ve FirstName alanına göre yeni listeye çevirir.
+            list.Average(u => u.ListPrice);             //Ortalama Değerini döndürür
+            list.Count(u => u.Category == "muhittin");      //Kategorisi muhittin olanların toplamı
+            list.Sum(u => u.ListPrice);                 //ListPrice değerlerini toplar
+            list.Where(u => u.ProductName.Contains("elma")); //ProductName i elma içerenleri dönderir.
+            list.Min(u => u.Price);  //Minimum değerini dönderir
+            list.Max(u => u.Price);   //Maximum değerini dönderir
+            
         }
 
 
@@ -93,6 +122,53 @@
             configurationBuilder.AddJsonFile("conf.json");
             IConfigurationRoot configurationRoot = configurationBuilder.Build();
             var sonuc = configurationRoot["Conf:A"];
+
+        }
+
+
+        void MinimalApi()
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+
+            var connectionString = builder.Configuration.GetConnectionString("");
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+
+            var app = builder.Build();
+
+            if (app.Enviroment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.SwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+            app.MapGet("v1/Todo", async (AppDbContext db) =>
+            {
+                var bla = await db.blabla.ToListAsync();
+                return Results.Ok(bla);
+            }).WithName("BlaBla").Produces(200).Prdoduces<List<blaModel>>();
+
+
+            app.MapGet("v1/Doto/{id}", async (AppDbContxt db,int id) =>
+            {
+                var bla = await db.blabla.FistOrDefault(x => x.Id == id);
+                if(bla==null)
+                    return Results.NotFound();
+                return Results.Ok(bla);
+            });
+
+
+            app.MapPost("v1/Todo", async (AppDbContext db, blaModel blaa) =>
+            {
+
+            }).WithName("PostBla");
+
+            app.Run();
 
         }
 
