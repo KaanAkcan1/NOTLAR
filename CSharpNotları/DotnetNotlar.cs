@@ -1,4 +1,6 @@
-﻿namespace CSharpNotları
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace CSharpNotları
 {
     public class DotnetNotlar
     {
@@ -172,6 +174,50 @@
 
         }
 
+        void EntityFrameWorkTutorial()
+        {
+            //Contoller açıyoruz ilk başta 
+            //Contollerı :DbContext sınıfından türetiyoruz
+            //Microsoft.EntityFrameWorkCoreDesign kuruyoruz
+            //Microsoft.EntityFrameWorkSqlServer kuruyoruz manage nuget packegas tan 
+            // appsettings.json içerisinde connection string tanımlıyoruz
+            "ConnectionStrings" : {
+                "DefaultConnection" : "server=localhost\\sqlexpress;database =qqq;trusted_connection=true"
+            }
+            //Connection string almak için Studio da
+            //Tools-ConnectToDatabase-MicrosoftSqlServer-Mssql
+            //açınca isimi giriyoruz-
+            //Veritabanını seçiyoruz-Advanced da altta connectionstring yazıyor.
+
+            //package Manage Console açıyoruz
+            //Açık değilse view-other Windows-Package Manaager Console yada ctrl+ö
+            //dotnet ef yazıyoruz konsola
+            //dotnet tool install --global dotnet-ef yazıyoruz
+            //eğer older version yüklüyse install ı uninstall yapıp tekrar kurucaz sonra
+
+            //Program.cs içerisine
+            builder.Services.AddDbContext<DataContext>(options =>
+              options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnetion"))
+            });  // DataContext contollerimizn ismi
+
+            //controllerın içi=>
+            public class DataContext : DbContext
+            {
+                public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+
+                public DbSet<ModelExample> modelExamples { get; set; }
+            }
+
+        //Package Manager Console'a
+        //dotnet ef migrations add 2022.01.26
+        // adam directory hatası aldı dir falan yaptı?
+        //https://www.youtube.com/watch?v=Fbf_ua2t6v4 linkinde 47.11
+
+        //Dosyalar oluştumu diye kontrol edip PMC ye
+        //dotnet ef database update yaptı bitti.
+
     }
+
+}
 
 }
