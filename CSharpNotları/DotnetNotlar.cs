@@ -39,8 +39,6 @@ namespace CSharpNotları
             };
             }
             #endregion
-
-
         }
         List<FileInfo> DosyaYazdir(string path)
         {
@@ -61,24 +59,58 @@ namespace CSharpNotları
             return fileInfos;
         }
 
-        
         void Linq()
         {
-            
+
             var list = new List<ÖrnekModel>();
             list.Take(5);                               //En üstten ilk beşini alır
             list.OrderByDescending(x => x.Id);           //Id ye göre terseten sıralar
-            list.Select(u => new { u.Id,u.FirstName });   //listeyi Id ve FirstName alanına göre yeni listeye çevirir.
+            list.Select(u => new { u.Id, u.FirstName });   //listeyi Id ve FirstName alanına göre yeni listeye çevirir.
             list.Average(u => u.ListPrice);             //Ortalama Değerini döndürür
             list.Count(u => u.Category == "muhittin");      //Kategorisi muhittin olanların toplamı
             list.Sum(u => u.ListPrice);                 //ListPrice değerlerini toplar
             list.Where(u => u.ProductName.Contains("elma")); //ProductName i elma içerenleri dönderir.
             list.Min(u => u.Price);  //Minimum değerini dönderir
             list.Max(u => u.Price);   //Maximum değerini dönderir
-            
+
         }
 
+        void AddJsToProject()
+        {
+            #region Hazır Js eklemek
+            /*Project => Add => ClientSide Library => 
+             * Provider unpkg Library ismi
+             * Gulpfile içine uzantısıyla beraber ismini ekle
+             * Gulpfile'ın olduğu dosyada cmd yazıp
+             * gulp --tasks
+             * gulp min:js(bunu üsteki koddan bulduk. Değişebilir)
+             */
+            #endregion
 
+            #region Kütüphanede olmayan js dosyası ekleme
+            /*files / js / plugins içine dosyayı ekle
+             * gulfpfile da diğerlerini tanımladığımız yerin altına
+             * js.Paths.push("./files/js/plugin/Dosya") şeklinde ekleniyor 
+             */
+            #endregion
+
+            #region Kendi Js Dosyamızı eklemek
+            /*js => src içine dosyayı ekliyoruz
+             * gulpta;
+             * gulp.watch([paths.source.js+'/dosyaismi.js'],minAppJs); kodunu gulpfile a ekle
+             * var appSite=[
+             *              paths.source.js+'/dosyaismi.js',
+             *              ] => bu kod üstekiyle aynı.
+             */
+            #endregion
+
+            #region Js Dosyası Çıkarıp Silme
+            /*Delete file
+             * Delete in Libman file
+             * Gulpfile içinden sil
+             */
+            #endregion
+        }
 
 
 
@@ -102,7 +134,7 @@ namespace CSharpNotları
 
             app.UseCors();//app nesnesine middleware tanımlaması yaptık
             app.Services.GetService<IHttpContextAccessor>();//Kullanabilmek içinde onu çektik. Dependency injection ile kullanabiliriz artık.
-            
+
             app.MapGet("/", () => "Hello Fucking World!");//Minimal api get methodu tanımlaması
 
             //Başka bir json dosyasından konfigurasyon dosyası alma yöntemi
@@ -126,7 +158,6 @@ namespace CSharpNotları
             var sonuc = configurationRoot["Conf:A"];
 
         }
-
 
         void MinimalApi()
         {
@@ -156,10 +187,10 @@ namespace CSharpNotları
             }).WithName("BlaBla").Produces(200).Prdoduces<List<blaModel>>();
 
 
-            app.MapGet("v1/Doto/{id}", async (AppDbContxt db,int id) =>
+            app.MapGet("v1/Doto/{id}", async (AppDbContxt db, int id) =>
             {
                 var bla = await db.blabla.FistOrDefault(x => x.Id == id);
-                if(bla==null)
+                if (bla == null)
                     return Results.NotFound();
                 return Results.Ok(bla);
             });
@@ -174,16 +205,17 @@ namespace CSharpNotları
 
         }
 
-        void EntityFrameWorkTutorial()
+        void EntityFrameWork()
         {
+            #region Tutorial
             //Contoller açıyoruz ilk başta 
             //Contollerı :DbContext sınıfından türetiyoruz
             //Microsoft.EntityFrameWorkCoreDesign kuruyoruz
             //Microsoft.EntityFrameWorkSqlServer kuruyoruz manage nuget packegas tan 
             // appsettings.json içerisinde connection string tanımlıyoruz
-            "ConnectionStrings" : {
-                "DefaultConnection" : "server=localhost\\sqlexpress;database =qqq;trusted_connection=true"
-            }
+            //"ConnectionStrings" : {
+            //    "DefaultConnection" : "server=localhost\\sqlexpress;database =qqq;trusted_connection=true"
+            //}
             //Connection string almak için Studio da
             //Tools-ConnectToDatabase-MicrosoftSqlServer-Mssql
             //açınca isimi giriyoruz-
@@ -196,28 +228,36 @@ namespace CSharpNotları
             //eğer older version yüklüyse install ı uninstall yapıp tekrar kurucaz sonra
 
             //Program.cs içerisine
-            builder.Services.AddDbContext<DataContext>(options =>
-              options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnetion"))
-            });  // DataContext contollerimizn ismi
+            //builder.Services.AddDbContext<DataContext>(options =>
+            //  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnetion"))
+            //});  // DataContext contollerimizn ismi
 
             //controllerın içi=>
-            public class DataContext : DbContext
-            {
-                public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+            //    public class DataContext : DbContext
+            //{
+            //    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-                public DbSet<ModelExample> modelExamples { get; set; }
-            }
+            //    public DbSet<ModelExample> modelExamples { get; set; }
+            //}
 
-        //Package Manager Console'a
-        //dotnet ef migrations add 2022.01.26
-        // adam directory hatası aldı dir falan yaptı?
-        //https://www.youtube.com/watch?v=Fbf_ua2t6v4 linkinde 47.11
+            //Package Manager Console'a
+            //dotnet ef migrations add 2022.01.26
+            // adam directory hatası aldı dir falan yaptı?
+            //https://www.youtube.com/watch?v=Fbf_ua2t6v4 linkinde 47.11
 
-        //Dosyalar oluştumu diye kontrol edip PMC ye
-        //dotnet ef database update yaptı bitti.
+            //Dosyalar oluştumu diye kontrol edip PMC ye
+            //dotnet ef database update yaptı bitti.
+            #endregion
+
+            #region Database table güncelleme
+            //Package Manager Console'da aşşağıdaki komutları teker teker yazıyoruz
+            //add-migration Tarih
+            //update-database
+            #endregion
+        }
 
     }
 
 }
 
-}
+

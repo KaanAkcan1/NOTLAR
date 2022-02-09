@@ -130,11 +130,23 @@
             #region load
 
             #endregion
-            #region resize
-
+            #region resize => Ekran boyutu değiştirince tetikleniyor
+            //var w,h;
+            //w = $(window).width();
+            //h = $(window).heigth();
+            //$("#width").text(w);
+            //$("#height").text(h);
+            //$(window).resize(function(){
+            //  w = $(window).width();
+            //  h = $(window).heigth();
+            //  $("#width").text(w);
+            //  $("#height").text(h);
+            //});
             #endregion
             #region scroll
-
+            //$("div").scroll(function(){
+            //    $("span").text(x+=1);
+            //});
             #endregion
             #region unload
 
@@ -142,8 +154,8 @@
 
             #endregion
 
-            #region on  => Birden fazla event kullanmak için
-            //$("p").on("click", function(){
+            #region on  => Birden fazla event kullanmak için kullanımı
+            //$("p").on("click mouseleave", function(){ //or gibi çalışır
             //    codes
             //});
 
@@ -160,6 +172,60 @@
 
             #endregion
 
+            #region on-off kullanımı (sürüm 3.0 dan önce bind unbind bu işlemi gerçekleştiriyordu)
+            //On ile tetiklenen eventi kapatmak için kullanılır
+            //$("p").on("click", function(){
+            //    $(this).css("color", "red");
+            //});
+            //$("#btn").click(function(){
+            //    $("p").off("click");
+            //});
+            #endregion
+
+            #region Change-Select
+            //On ile tetiklenen eventi kapatmak için kullanılır
+            //$("#username").change(function(){
+            //    alert("Kutuda değişiklik yapınca değişir");
+            //});
+            //$("#seçici").select(function(){
+            //    $("#result").text("Seçim sağlanınca tetiklendi");
+            //});
+            #endregion
+
+            #region One
+            //Bir fonksiyonu sadece ilk tetiklendiğinde çalıştırır
+            //$("p").one("click", function(){
+            //    $(this).css("color", "red");
+            //});
+
+            #endregion
+
+            #region Proxy
+            //Proxy ile mevcut fonksiyonu alıp belirlibir bağlamda yenisini durdurabiliriz
+            //$(function(){
+            //  var objPerson={
+            //      name:"Ayfer UYAR",
+            //      age:30,
+            //      test:function(){
+            //          $("p").text("İsim: "+this.name+" Yaş: "this.age);
+            //      }
+            //  };
+            //  $("#btn").click($.proxy(objPerson, "test"));
+            //});
+            #endregion
+
+            #region ready => Hazır olduğunda tetiklenir
+
+            #endregion
+
+            #region trigger => bir eventi tetikler
+            //$("input").select(function(){
+            //  $("#result").text("Metni seçtin");
+            //});
+            //$("#btn").click(function(){
+            //  $("input").trigger("select");
+            //});
+            #endregion
         }
     }
 }

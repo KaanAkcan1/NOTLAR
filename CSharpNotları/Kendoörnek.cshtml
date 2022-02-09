@@ -1,0 +1,143 @@
+﻿Kendokullanim.cshtml
+
+<div class="main-content container-fluid">
+    <div class="page-head">
+        <div class="row align-items-center">
+            <div class="col-xl-3">
+                <h2 class="page-head-title">@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card card-grid">
+        <div class="card-grid-toolbar d-flex">
+            <span class="search-input search-icon">
+                <input type="text" name="searchbox"
+                       data-filter-columns="@nameof(Application.Code),@nameof(Application.CompanyName),@nameof(Application.TaxNumber)"
+                       class="form-control k-grid-quickfilter"
+                       placeholder="Başvuru kodu, Firma adı" />
+            </span>
+
+            @if (User.IsInRoleAny(Settings.Roles.AdminOrHigher))//Bu bizim js kodlarıyla yazdığımız bir script. Bu filtrelemeler hariç gerisi kendoda
+            {
+                <select class="sp k-grid-filter mr-1"
+                        autocomplete="@Guid.NewGuid()"
+                        placeholder="Tüm Durumlar"
+                        data-filter-columns="@nameof(Application.StatusId)"
+                        data-filter-datatype="number"
+                        data-selected-value="5001"
+                        data-data-url="/v1/application/selectlist/ApplicationStatus">
+                    <option value="">Tüm Durumlar</option>
+                </select>
+
+                <select class="sp k-grid-filter mr-1"
+                        autocomplete="@Guid.NewGuid()"
+                        placeholder="Tüm Kategoriler"
+                        data-filter-columns="@nameof(Application.CategoryId)"
+                        data-filter-datatype="number"
+                        data-data-url="/v1/application/selectlist/ApplicationCategory">
+                    <option value="">Tüm Kategoriler</option>
+                </select>
+
+            }
+
+
+            <div class="flex-grow-1"></div>
+            <a class="icon-button grid-export" title="Excel olarak indir"><i class="fa far fa-arrow-to-bottom"></i></a>
+
+        </div>
+        <div class="card-body card-body-grid">
+            @(Html.Kendo().Grid<Application>()
+                .Name("grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.Code)
+                     .Width(200)
+                     .Title("Başvuru Kodu")
+                     .Filterable(false)
+                     .Sortable(false)
+                     .IncludeInMenu(false)//?
+                     .ClientTemplate(//Üzerine gelince açılan menü için
+                             "<div class='row-commands'>" +
+                             "<a href='\\#' class='open-application-form' data-entity-name='application' data-id='#:Id#' title='Düzenle'><i class='fa fas fa-pencil'></i></a>" +
+                             (User.IsInRoleAny(Settings.Roles.AdminOrHigher) ? "<a href='\\#' class='cmd cmd-delete' data-entity='application' data-id='#:Id#' data-title='Kayıt silinsin mi?' data-text='Bu kaydı silmek istediğinizden emin misiniz?' data-type='warning' title='Sil'><i class='fa fas fa-trash'></i></a>" : "") +
+                             "</div>#:Code#");
+
+                    columns.Bound(p => p.Category).Width(250).Title("Kategori");
+                    columns.Bound(p => p.CompanyName).Width(300).Title("Firma Adı");
+                    columns.Bound(p => p.TaxNumber).Width(150).Title("Vergi No");
+                    columns.Bound(p => p.City).Width(100).Title("Şehir");
+                    columns.Bound(p => p.Sector).Width(170).Title("Sektör");
+
+                    columns.Bound(p => p.FullName).Width(250).Title("Başvuru Yapan");
+                    columns.Bound(p => p.Email).Width(220).Title("E-posta");
+                    columns.Bound(p => p.Phone).Width(150).Title("Telefon");
+                    if (User.IsInRoleAny(Settings.Roles.AdminOrHigher))
+                    {
+                        columns.Bound(p => p.Average).Width(150).Title("Ortalama");
+                    }
+
+                    columns.Bound(p => p.YearEstablished).Width(90).Title("Kuruluş Yılı").Hidden();
+                    columns.Bound(p => p.Address).Width(150).Title("Adres").Hidden();
+                    columns.Bound(p => p.WebSite).Width(150).Title("Web Sitesi").Hidden();
+                    columns.Bound(p => p.PartnershipType).Width(140).Title("Ortaklık Durumu").Hidden();
+                    columns.Bound(p => p.PartnershipShare).Width(140).Title("Ortaklık Payı").Hidden();
+                    columns.Bound(p => p.EmployeeCount).Width(130).Title("Çalışan Sayısı").Hidden();
+                    columns.Bound(p => p.About).Width(300).Title("Firma Hakkında").Hidden();
+                    columns.Bound(p => p.Products).Width(300).Title("Ürün/Hizmetler Hakkında").Hidden();
+                    columns.Bound(p => p.Patents).Width(300).Title("Patent vb. Fikri ve Sınai Mülkiyet Hakları").Hidden();
+                    columns.Bound(p => p.Sponsors).Width(300).Title("Alınan Destekler").Hidden();
+                    columns.Bound(p => p.Investment).Width(200).Title("Yatırım Miktarı ($)").Format("{0:n2}").HtmlAttributes(new { @class = "text-right" }).Hidden();
+
+                    columns.Bound(p => p.IncomeAmount1).Width(200).Title(DateTime.Today.Year - 3 + " Ciro Bilgileri (TL)").HtmlAttributes(new { @class = "text-right" }).Format("{0:n2}").Hidden();
+                    columns.Bound(p => p.IncomeAmount2).Width(200).Title(DateTime.Today.Year - 2 + " Ciro Bilgileri (TL)").HtmlAttributes(new { @class = "text-right" }).Format("{0:n2}").Hidden();
+                    columns.Bound(p => p.IncomeAmount3).Width(200).Title(DateTime.Today.Year - 1 + " Ciro Bilgileri (TL)").HtmlAttributes(new { @class = "text-right" }).Format("{0:n2}").Hidden();
+
+                    columns.Bound(p => p.ExportAmount1).Width(200).Title(DateTime.Today.Year - 3 + " İhracat Bilgileri ($)").HtmlAttributes(new { @class = "text-right" }).Format("{0:n2}").Hidden();
+                    columns.Bound(p => p.ExportAmount2).Width(200).Title(DateTime.Today.Year - 2 + " İhracat Bilgileri ($)").HtmlAttributes(new { @class = "text-right" }).Format("{0:n2}").Hidden();
+                    columns.Bound(p => p.ExportAmount3).Width(200).Title(DateTime.Today.Year - 1 + " İhracat Bilgileri ($)").HtmlAttributes(new { @class = "text-right" }).Format("{0:n2}").Hidden();
+
+
+                    columns.Bound(p => p.StatusText).Title("Durum").Width(170);
+                    columns.Bound(p => p.CreatedOn).Title("Oluşturma").Format("{0:dd.MM.yyyy HH:mm}").Hidden().Width(170);
+                    columns.Bound(p => p.CreatedBy).Title("Oluşturan").Width(200).Hidden();
+
+                    if (User.IsInRoleAny(Settings.Roles.AdminOrHigher))
+                    {
+                        columns.Bound(p => p.ModifiedOn).Title("Güncelleme").Format("{0:dd.MM.yyyy HH:mm}").Hidden().Width(170);
+                        columns.Bound(p => p.ModifiedBy).Title("Düzenleyen").Width(200).Hidden();
+                    }
+
+                })
+                .Pageable(p =>
+                {
+                    p.Input(true);
+                    p.Refresh(true);
+                    p.Numeric(false);
+                })
+                .Sortable()
+                .Scrollable()
+                .ColumnMenu()
+                .Reorderable(r => r.Columns(true))
+                .Filterable()
+                .Resizable(r => r.Columns(true))
+                .Events(e => e.DataBound("app.kendo.gridDataBound"))
+                .Excel(excel => excel
+                    .FileName($"basvurular_{DateTime.Now:yyyyMMdd}.xlsx")
+                    .Filterable(true)
+                    .AllPages(true)
+                )
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .PageSize(20)
+                    .Sort(sort =>
+                    {
+                        sort.Add(x => x.StatusId).Ascending();
+                        sort.Add(x => x.CreatedOn).Descending();
+                    })
+                    .Filter(f => f.Add(p => p.StatusId).IsEqualTo(User.IsInRoleAny(Settings.Roles.AdminOrHigher) ? (int)Settings.ApplicationStatus.NewApplication : (int)Settings.ApplicationStatus.Approved))
+                    .Read(read => read.Url($"/v1/application/list-kendo"))
+                ).Deferred())//Önce Kendo Js dosyasının yüklenmesini bekleyip sonra gridi yüklüyor. Bu şekilde gridin önce yüklenip kendogrid js dosyası yok hatası almamızı engelliyor.
+
+        </div>
+    </div>
+</div>

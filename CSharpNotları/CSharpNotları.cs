@@ -143,6 +143,9 @@ namespace CSharpNotları
             dynamic x;//Bu şekilde tanımlama ile runtime a kadar x değişkeninin türü bilinmez. Program çalışınca türünü belirler. Var gibi ama vardan bir aşama sonra türü belirleniyor
                       //dynamic ile kararlı bir türe sahip değil.Değişkene önce string sonra int türü verebiliriz.
             a.GetType();// ile Türünü öğreniyoruz
+            #region readonly 
+            //Tanımlandığı klas içinde bir kere değeri atanabilen ve daha sonra değiştirilemeyen property
+            #endregion
         }
 
         void DateTimeStruct()
@@ -205,6 +208,14 @@ namespace CSharpNotları
             //Parametre isimleri veya türlerini farklı yaparak overload yapabiliriz
             //Geri dönüşüm değeri değiştirilemez
             #endregion
+        }
+
+
+        void NullProtection()
+        {
+            //var a = "asd";
+            //var b = a?.;
+            //null olup olmadığını kontrol edip alması için
         }
 
         void OutKeywordü()

@@ -116,7 +116,7 @@
         public string B { get; set; } = "sadas";
         #endregion
         #region RefReadOnlyProperty
-        string adi = "KaanaKCAN";//Sürekli nesne oluşturmaktansa reerans ile bellek optimizasyonu yapmamıza olanak sağlar.
+        string adi = "KaanaKCAN";//Sürekli nesne oluşturmaktansa referans ile bellek optimizasyonu yapmamıza olanak sağlar.
         public ref readonly string Adi => ref adi;
         #endregion
         #region ComputedProperties
