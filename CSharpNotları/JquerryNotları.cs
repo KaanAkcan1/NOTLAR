@@ -66,7 +66,7 @@
         }
 
 
-        void Eventler()
+        void EventMetodlar()
         {
             #region MouseEvents
             #region click    =>Tıklama da kullanılıyor
@@ -86,6 +86,21 @@
             #endregion
             #region mouseup => farenin tıklamasından kaldırdığında
 
+            #endregion
+            #region mousemove => fare hareket ettikçe
+            //$("p").mousemove(function(){
+            //  $("#result").text(x+=1);
+            //});
+            #endregion
+            #region mouseover => fare o alana girince
+            //$("p").mouseover(function(){
+            //  $("p").css("background-color", "red");
+            //});
+            #endregion
+            #region mouseout => mause o nesnenin dışına çıktığı anda
+            //$("p").mouseout(function(){
+            //  $("p").css("backgroun-color", "yellow");
+            //});
             #endregion
             #region hover   => bildiğimiz hover işte
             //$("p").hover(function(){
@@ -120,6 +135,16 @@
             #region focus  => inputa odaklandığında, tıkladığında
 
             #endregion
+            #region focusin => Bir elemente yada altındaki herhangi bir ögeye odaklanıldığında tetiklenir
+            //$("div").focusin(function(){
+            //  $(this).css.("background-color","darkred");
+            //});
+            #endregion
+            #region focusout => Bir elementten yada altındaki herhangi bir ögeden odağı kaybettiğimizde tetiklenir
+            //$("div").focusout(function(){
+            //  $(this).css.("background-color","darkgoldenrod");
+            //});
+            #endregion
             #region blur  => inputtakifocus sona erdiği anda
 
             #endregion
@@ -127,7 +152,7 @@
             #endregion
 
             #region Document/Window Events
-            #region load
+            #region load (3.0 da kaldırıldı)
 
             #endregion
             #region resize => Ekran boyutu değiştirince tetikleniyor
@@ -225,6 +250,14 @@
             //$("#btn").click(function(){
             //  $("input").trigger("select");
             //});
+            #endregion
+        }
+
+
+        void EventProperty()
+        {
+            #region event.currentTarget
+
             #endregion
         }
     }
