@@ -40,6 +40,7 @@ namespace CSharpNotları
             }
             #endregion
         }
+
         List<FileInfo> DosyaYazdir(string path)
         {
             List<FileInfo> fileInfos = new();
@@ -109,6 +110,33 @@ namespace CSharpNotları
              * Delete in Libman file
              * Gulpfile içinden sil
              */
+            #endregion
+        }
+
+        void AccessModifier()
+        {
+            #region public
+            //Tüm solutionda kullanılabilir
+            #endregion
+
+            #region internal
+            //Aynı proje içinde kullanılabilir
+            #endregion
+
+            #region private
+            //Aynı class içinde kullanılabilir
+            #endregion
+
+            #region protected
+            //Sınıfın veya ondan türetilen herşeyin içinde kullanılıyor
+            #endregion
+
+            #region private protected
+
+            #endregion
+
+            #region protected internal
+            //Aynı proje içinde kullanılabilir.
             #endregion
         }
 
@@ -253,6 +281,20 @@ namespace CSharpNotları
             //Package Manager Console'da aşşağıdaki komutları teker teker yazıyoruz
             //add-migration Tarih
             //update-database
+            #endregion
+
+            #region Database First Model Güncelleme
+            //Model.edmx aç
+            //Sayfada boş yere sağ tıkla
+            //Update Model From DataBase
+            //Refresh deyip table dedik
+            //finish
+
+
+            //tim de güncelleme yaparken expo.tim code first, tim database first.
+            // ancak migrationda sıkıntı olduğu için expo.tim de class düzenleyip 
+            //database de eklememiz gerekmekte.
+
             #endregion
         }
 

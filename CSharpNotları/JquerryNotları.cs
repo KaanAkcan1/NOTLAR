@@ -257,7 +257,76 @@
         void EventProperty()
         {
             #region event.currentTarget
+            //Etkinlik köpürme aşamasındaki geçerli dom ögesi
+            #endregion
 
+            #region event.data
+            //Geçerli yürütme işleyicisi bağlı olduğunda bir olay 
+            //yönetimine iletilen isteğe bağlı veriler
+            #endregion
+
+            #region event.deleteTarget
+            //Şu anki jquerry olay işleyicisinin etkilendiği ögeyi döndürür
+            #endregion
+
+            #region event.preventDefault
+            //Eventin varsayılan eylemini engeller
+            #endregion
+
+            #region event.isDefaultPrevented
+            //event nesnesi için prevenddefault metodunun çağrılıp çağrılmadığını döndürür
+            #endregion
+
+            #region event.namespace
+            //Etkinlik tetiklendiğinde belirtilen ad alanını döndürür
+            #endregion
+
+            #region event.pageX
+            //Belgenin sol kenarına göre x düzleminde konumunu döndürür
+            #endregion
+
+            #region event.pageY
+            //Belgenin üst kenarına göre y düzleminde konumnunu döndürür
+            #endregion
+
+            #region event.relatedTarget
+            //Fare hareketi sırasında hangi ögenin girildiğini veya çıkıldığını döndürür
+            #endregion
+
+            #region event.isİmmediatePropagation
+            //event nesnesi için stopİmmediatePropagation methodu çağrılıp çağrılmadığını döndürür
+            #endregion
+
+            #region event.isPropagationStopped
+            //event nesnesi için stopPropagation metodu çağrılıp çağrılmadığını dönder
+            #endregion
+
+            #region event.result
+            //Belirtilen olay tarafından tetiklenen bir olay işleyicisinin döndürdüğü
+            //son/önceki değeri içerir
+            #endregion
+
+            #region event.stopImmediatePropagation
+            //Diğer olay işleyicilerinin çağrılmasını engeller
+            #endregion
+
+            #region event.stopPropagation
+            //Etkinliğin Dom ağacını köpürtmesini ve ana işleyicilerin etkinlikten
+            //haberdar olmasını engeller
+            //div içine p içine span olduğunu varsayalım. Spana tıkladığımızda sadece ona tıklanmış gibi
+            //gösterir. Aile nodalarda uygulama göstermez
+            #endregion
+
+            #region event.target
+            //Hangi dom ögesinin olayı tetiklediğini döndürür
+            #endregion
+
+            #region event.timeStamp
+            //1 ocak 1970'ten bu yana geçen milisaniye değerini dönderir
+            #endregion
+
+            #region event.which
+            //Etkinlik için hangi klavye tuşuna veya fare düğmesine basıldığını dönderir
             #endregion
         }
     }
