@@ -296,6 +296,43 @@ namespace CSharpNotları
             //database de eklememiz gerekmekte.
 
             #endregion
+
+            #region DbInitializer
+            //InitializeAsync methodunu çalıştırınca database i düzenlemek için kullanılıyor. Migration ile alakası yok.
+            #endregion
+
+            #region ApplicationDbContext
+            //public virtual DbSet<AppUser> AppUsers { get; set; }//AppUser modelini ekledik
+
+
+            //protected override void OnModelCreating(ModelBuilder builder)
+            //{
+            //    base.OnModelCreating(builder);
+
+            //    builder.Entity<PropertyValue>(b =>
+            //    {
+            //        b.Property(u => u.Id).ValueGeneratedNever();//Bu kod ile database değil biz otomatik Guid değeri veriyoruz.
+            //    });
+
+            //}
+            #endregion
+
+            #region İlk database first oluşturmak için
+
+            // Serverea sağ tıklayıp-Properties-Advenced-Containment-Enable Contained Database-True
+            // Add New Database-options-ContaintmentType-Partial
+            // Conneciton string "DefaultConnection": "Server=DESKTOP-MUDEQ61;Database=Deneme2Database;Trusted_Connection=True" şeklinde
+            #endregion
+        }
+
+        async Task SürekliçalışanKod()
+        {
+            var timer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+
+            while (await timer.WaitForNextTickAsync())
+            {
+                Console.WriteLine("Hello World after 10 seconds");
+            }
         }
 
     }

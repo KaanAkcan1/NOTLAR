@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue.js</title>
+    <script src = "https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h3>{{title}}</h3>
+        <button>{{buttonTitle}}</button>
+        <p>{{paragraph}} </p>
+        <p v-text = "paragraph"></p>
+        <a v-bind:href="link" v-bind:data-id="dataId">Google</a><!--v-bind : yerine : kullanılabilir burada-->
+        <p v-html="details"></p>
+        <br><br><br><br>
+        <input type="text" v-on:keypress="inputEnter($event)"> <!-- v-on:keypress yerine @keypress-->
+        <br>
+        <button v-on:click="arttir()">Arttır</button>
+        <p>{{sayi}}</p>
+        <button v-on:click="azalt()">Azalt</button>
+        <input type="text" @keypress.Enter="inputEnterAzalt($event)">
+    </div>
+
+
+
+    <script>
+        new Vue({
+            el:"#app",
+            data : {
+                title:"test başlıık",
+                buttonTitle:"Tıkla Gelsin",
+                paragraph:"lorem ipsum dolor sit amet lorem lorem",
+                link:"https://www.google.com",
+                dataId:"1",
+                details:"<b>Bu bir detay metinidir</p>",
+                sayi:0
+            },
+            methods:{
+                arttir:function(){
+                    this.sayi++;
+                },
+                azalt:function(){
+                    this.sayi--;
+                },
+                inputEnter:function(e){
+                    console.log(e);
+                    if(e.keyCode ==13)
+                    {
+                        this.sayi += parseInt(e.target.value);
+                    };                    
+                },
+                inputEnterAzalt:function(e){
+                    console.log(e);                    
+                    this.sayi -= parseInt(e.target.value);                                        
+                }
+            }     
+        });
+    
+    </script>
+</body>
+</html>

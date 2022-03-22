@@ -501,6 +501,13 @@ namespace CSharpNotları
             #endregion
         }
 
+        void StringFormat()
+        {
+            DateTime.ToString("MM/dd/yyyy HH:mm"));
+            var a = "123";
+            var b = $"{a} - NAber  ben {a + a}";
+        }
+
         void SwitchYöntemleri()
         {
             var a = 1;
