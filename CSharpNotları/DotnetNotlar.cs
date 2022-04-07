@@ -323,6 +323,39 @@ namespace CSharpNotları
             // Add New Database-options-ContaintmentType-Partial
             // Conneciton string "DefaultConnection": "Server=DESKTOP-MUDEQ61;Database=Deneme2Database;Trusted_Connection=True" şeklinde
             #endregion
+
+            #region Databaseleri bağlamak için
+
+            //Question table'ından user createdbyFullname almak için AppUser'a aşşağıdakileri ekledik
+            //[JsonIgnore]
+            //public virtual ICollection<Question> QuestionsCreated { get; set; }
+
+            //[JsonIgnore]
+            //public virtual ICollection<Question> QuestionsModified { get; set; }
+
+            //********************************************************************************
+            ////ApplicationDbContext te aşşağıdaki tanımlamaları yaptık
+
+            //builder.Entity<AppUser>(entity => { 
+
+            // entity
+            //       .HasMany(x => x.QuestionsCreated)
+            //       .WithOne(x => x.CreatedByUser)
+            //       .HasForeignKey(x => x.CreatedBy)
+            //       .OnDelete(DeleteBehavior.Restrict);
+
+            //entity
+            //        .HasMany(x => x.QuestionsModified)
+            //        .WithOne(x => x.ModifiedByUser)
+            //        .HasForeignKey(x => x.ModifiedBy)
+            //        .OnDelete(DeleteBehavior.Restrict);
+
+            //********************************************************************************
+            ////Daha sonra bunu kullanırken KEndoListte  aşşağıdaki gibi tanımladık
+
+            //        CreatedByUserFullname = x.CreatedByUser != null ? x.CreatedByUser.FullName : null,
+            //        ModifiedByUserFullname = x.ModifiedByUser != null ? x.ModifiedByUser.FullName : null
+            #endregion
         }
 
         async Task SürekliçalışanKod()
