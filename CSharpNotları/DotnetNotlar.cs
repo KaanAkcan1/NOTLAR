@@ -16,6 +16,14 @@ namespace CSharpNotları
 
         }
 
+        void DiğerŞeyler()
+        {
+            #region wwroot klasörünü tanımlamak için Startup.cs içinde Configure functiona yazıyoruz.
+            //app.UseStaticFilers();
+            #endregion
+
+        }
+
         void Dosyaİşlemleri()
         {
             #region İndirtme işlemi için
