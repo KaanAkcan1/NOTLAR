@@ -299,6 +299,8 @@ namespace CSharpNotları
 
             #region DbInitializer
             //InitializeAsync methodunu çalıştırınca database i düzenlemek için kullanılıyor. Migration ile alakası yok.
+
+            // TimOnline da çalıştırma sakın. Elden ekle birşey lazım olursa.
             #endregion
 
             #region ApplicationDbContext

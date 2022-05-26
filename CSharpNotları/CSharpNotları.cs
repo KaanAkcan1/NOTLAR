@@ -210,12 +210,13 @@ namespace CSharpNotları
             #endregion
         }
 
-
         void NullProtection()
         {
             //var a = "asd";
             //var b = a?.;
-            //null olup olmadığını kontrol edip alması için
+            //null olup olmadığını kontrol edip alması için. hata almayı engeller.
+
+            //var c = a ?? "12" a null ise 12 yoksa a olur
         }
 
         void OutKeywordü()
