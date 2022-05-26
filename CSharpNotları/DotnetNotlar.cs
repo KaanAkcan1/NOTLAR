@@ -4,7 +4,30 @@ namespace CSharpNotları
 {
     public class DotnetNotlar
     {
+        void AppSettingstenVeriÇekmekveWWWrootKullanmak()
+        {
+            //private readonly MailServiceOptions _mailSettings;
+            //private readonly string _mailTemplatesRootPath;
 
+            //public MailService(IOptions<MailServiceOptions> mailSettings, IWebHostEnvironment env)
+            //{
+            //    _mailSettings = mailSettings.Value;
+            //    _mailTemplatesRootPath = Path.Combine(env.WebRootPath, _mailSettings.TemplatesPath);
+            //}
+
+            //Startup.Cs'te
+            //builder.Services.Configure<MailServiceOptions>(builder.Configuration.GetSection(nameof(MailServiceOptions)));
+
+            //AppSettings'te
+            //"MailServiceOptions": {
+            //    "Username": "mailengine@performans.com",
+            //    "DisplayName": "PerformansDeneme",
+            //    "Password": "kusEp9su",
+            //    "Host": "mail.performans.com",
+            //    "Port": 587,
+            //    "TemplatesPath":  "files/html/"
+            //  }
+        }
         class ÖrnekModel
         {
             public int Id { get; set; }
