@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Kendoörnek.cshtml" />
+    <Compile Include="WebSites\Kendoörnek.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Vue.html" />
+    <Content Include="FrontSide\Vue.html" />
   </ItemGroup>
 
   <ItemGroup>
