@@ -18,6 +18,18 @@
         //docker run ubuntu sleep 3
         //=> 3 saniyelik çalışır vaziyette kalır
 
+        //docker run -d ubuntu
+        //=>detach modda çalışır. yani arkaplanda çalışır
+
+        //docker run -it ubuntu
+        //=> interaktive terminali açarak çalışma esnasında kullanıcıdan cevap isterse onu beklemesini sağlar.
+
+        //docker attach 56cc
+        //=> id değeri girerek arka planda çalışan uygulamayı öne alır
+
+        //docker container logs 08589
+        //=> id değerindeki containerin çalıştığı andan bu yanaki loglarını gösterir.
+
         //docker start bash_ubuntu
         //=> bash ubuntu ismindeki containerı çalıştırır. Container Id de kullanılabilir.
 
@@ -54,6 +66,11 @@
         //=> kapama
 
 
+        #endregion
+        #region Bağlanma
+        //docker run -p DIS_PORT:IC_PORT mongo
+        //docker run -p 27018:27017 mongo//Doldurulmuş hali
+        //=> dışarıdan mongoya bağlanmak için gerekli port numaralarını tanımlama şekli. 
         #endregion
     }
 }
