@@ -41,6 +41,9 @@
 
         //docker container rm $(docker container ls -aq)
         //=>bütün hepsini siler
+
+        //docker rmi redis
+        //=>img silme işlemi
         #endregion
         #region Çalışan veya çalışmış container listeleme
         //ll
@@ -62,6 +65,9 @@
         //docker images
         //=> var olan imageleri gösterir
 
+        //docker inspect #id
+        //=>Containeri inceler
+
         //exit
         //=> kapama
 
@@ -71,6 +77,63 @@
         //docker run -p DIS_PORT:IC_PORT mongo
         //docker run -p 27018:27017 mongo//Doldurulmuş hali
         //=> dışarıdan mongoya bağlanmak için gerekli port numaralarını tanımlama şekli. 
+
+        //docker run -v C:\Users\kaan\Documents\Docker:/data/db -p 27017:27017 mongo 
+        //=>Kalıcı bir şekilde database oluşturma
         #endregion
+        #region Mysql phpmyadmin
+        //docker run -e MYSQL_ROOT_PASSWORD = test123 - d mysql
+
+        //docker run --name mysql-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=test123 -d mysql
+
+        //docker run --name mysql-server -p 3306:3306 -v C:\Users\kaan\Documents\Docker:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD = deneme - d mysql
+
+        //docker run --name pmyadmin -p 8000:80 --link mysql-server:db -d phpmyadmin/phpmyadmin
+        #endregion
+        #region Network
+        //docker network ls
+
+        //docker network rm #id
+
+        //docker network create --driver bridge --subnet 182.18.0.1/24 --gateway 182.18.0.1 custom-network
+
+        //docker inspect #name
+
+        //docker run --name mongo-server --net custom-network -d mongo
+
+        //docker run --net custom-network -p 3000:3000 gkandemir/todo-app
+
+        //docker run --net custom-network -p 3000:3000 gkandemir/todo-app
+
+
+        #endregion
+        #region Ubuntu image tasarımı
+        //docker run -it ubuntu:18.04
+
+        //apt-get update
+
+        //apt-get install curl -y
+
+        //curl -sL https://deb.nodesource.com/setup_10.x | bash
+        //node js indirdik
+
+        //apt-get install nodejs -y
+        //kurduk
+
+        //ls klasörleri listeler
+
+        //cd opt klasör seçimi yapar
+
+        //mkdir node-app  node-app isminde klasör oluşturdu
+
+        //echo 'console.log("nodejsapp from ubuntu ...");' >index.js
+
+        //cat index.js => index.js i açar çıktısı => console.log("nodejsapp from ubuntu ...");
+
+        //node index.js => nodejsapp from ubuntu ... çıktısı verir.
+
+        //history => kod geçmişini çıkarır
+        #endregion
+
     }
 }
