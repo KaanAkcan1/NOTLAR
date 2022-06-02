@@ -78,6 +78,10 @@
         //docker run -p 27018:27017 mongo//Doldurulmuş hali
         //=> dışarıdan mongoya bağlanmak için gerekli port numaralarını tanımlama şekli. 
 
+
+        //docker run --name PostgreSQL -p 5432:5432 -e POSTGRES_PASSWORD=123456 -v C:\Users\kaan\Documents\Docker:/var/lib/postgresql/data -d  postgres
+        //postgre bağlantı
+
         //docker run -v C:\Users\kaan\Documents\Docker:/data/db -p 27017:27017 mongo 
         //=>Kalıcı bir şekilde database oluşturma
         #endregion
