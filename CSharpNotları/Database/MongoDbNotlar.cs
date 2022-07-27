@@ -271,11 +271,9 @@ namespace CSharpNotları
 
         #region Using driver
         ////Create a client that points to your data store
-        //var some_uri_to_MongoDb = MongoClientSettings.FromConnectionString("mongodb+srv://kaan:111222333@mflix.ulybz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-        ////some_uri_to_MongoDb was shown in Connect>ChooseaConnectionMethod
-        //var client = new MongoClient(some_uri_to_MongoDb);
-
-
+        //var mongoUri = MongoClientSettings.FromConnectionString("mongodb+srv://kaan:111222333@mflix.ulybz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+        ////mongoUri could find in Connect>Choose a Connection Method at Atlas dattebayo
+        //var client = new MongoClient(mongoUri);
 
         ////Sepecify the database and collection u want to use
         //var db = client.GetDatabase("sample_mflix");//database name
@@ -287,7 +285,6 @@ namespace CSharpNotları
         //    .FirstOrDefault();
 
         #endregion
-
 
         #region Filter methods
         //    var guitarsCollection = db.GetCollection<BsonDocument>("guitars");
@@ -317,7 +314,6 @@ namespace CSharpNotları
         //.ToList();
         #endregion
 
-
         #region Create Update Delete
         //asdasd
         //var newGuitar = new Guitar{
@@ -346,25 +342,26 @@ namespace CSharpNotları
 
 
         #endregion
+
         #region Delete Uygulama
-       // public async Task<Movie> DeleteCommentAsync(ObjectId movieId, ObjectId commentId,
-       //User user, CancellationToken cancellationToken = default)
-       // {
-       //     var result = _commentsCollection.DeleteOne(
-       //           Builders<Comment>.Filter.Where(
-       //              c => c.MovieId == movieId
-       //                    && c.Id == commentId
-       //                    && c.Email == user.Email));
+        // public async Task<Movie> DeleteCommentAsync(ObjectId movieId, ObjectId commentId,
+        //User user, CancellationToken cancellationToken = default)
+        // {
+        //     var result = _commentsCollection.DeleteOne(
+        //           Builders<Comment>.Filter.Where(
+        //              c => c.MovieId == movieId
+        //                    && c.Id == commentId
+        //                    && c.Email == user.Email));
 
-       //     return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
-       // }
+        //     return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
+        // }
         #endregion
-
 
         #region Basic Reads
         //var filter = new BsonDocument("title", "The Princess Bride");
 
         //var betterFilter = Builders<Movie>.Filter.Eq(m => m.Title, "The Princess Bride");
+        //var betterFilter = Builders<Movie>.Filter.In("genres", new string[] {"asd","a"});
 
         //var projectionFilter = Builders<Movie>.Projection
         //    .Include(m => m.Title)
@@ -380,7 +377,6 @@ namespace CSharpNotları
 
         #endregion
 
-
         #region Advanced Read
 
         //var movies = await _moviesCollection.Find<Movie>(filter)
@@ -394,25 +390,24 @@ namespace CSharpNotları
         //    .ToListAsync();
 
 
-    //return await _moviesCollection
-    //                      .Find(m => m.Countries.Any(c => countries.Contains(c)))
-    //                      .SortByDescending(m => m.Title)
-    //                      .Project<MovieByCountryProjection>(Builders<Movie>
-    //                                                                        .Projection
-    //                                                                            .Include(x => x.Title)
-    //                                                                            .Include(x => x.Id))
-    //                      .ToListAsync(cancellationToken);
+        //return await _moviesCollection
+        //                      .Find(m => m.Countries.Any(c => countries.Contains(c)))
+        //                      .SortByDescending(m => m.Title)
+        //                      .Project<MovieByCountryProjection>(Builders<Movie>
+        //                      .Projection
+        //                          .Include(x => x.Title)
+        //                          .Include(x => x.Id))
+        //                      .ToListAsync(cancellationToken);
 
 
-    // return await _moviesCollection
-    //            .Find(Builders<Movie>.Filter.In("genres", genres))
-    //            .Limit(limit)
-    //            .Skip(page* limit)
-    //            .Sort(sort)
-    //            .ToListAsync(cancellationToken);
+        // return await _moviesCollection
+        //            .Find(Builders<Movie>.Filter.In("genres", genres))
+        //            .Limit(limit)
+        //            .Skip(page* limit)
+        //            .Sort(sort)
+        //            .ToListAsync(cancellationToken);
 
         #endregion
-
 
         #region Basic Aggretions
         //$match
@@ -438,13 +433,12 @@ namespace CSharpNotları
 
         #endregion
 
-
         #region Using Aggregation Builders
         //var matchStage = new BsonDocument("$match",
         //    new BsonDocument("directors", "Bob Reiner"));
 
         //var sortStage = new BsonDocument("$sort",
-        //    new BsonDocument("tomatoes.viewer.numReviews", -1));
+        //    new BsonDocument("tomatoes.viewer.numReviews", -1)); //descanding
 
         //var projectionStage = new BsonDocument("$project",
         //    new BsonDocument
@@ -466,37 +460,143 @@ namespace CSharpNotları
 
         //another Example
         // I match movies by cast members
-    //    var matchStage = new BsonDocument("$match",
-    //        new BsonDocument("cast",
-    //            new BsonDocument("$in",
-    //                new BsonArray { cast })));
+        //    var matchStage = new BsonDocument("$match",
+        //        new BsonDocument("cast",
+        //            new BsonDocument("$in",
+        //                new BsonArray { cast })));
 
-    //    //I limit the number of results
-    //    var limitStage = new BsonDocument("$limit", DefaultMoviesPerPage);
+        //    //I limit the number of results
+        //    var limitStage = new BsonDocument("$limit", DefaultMoviesPerPage);
 
-    //    //I sort the results by the number of reviewers, descending
-    //    var sortStage = new BsonDocument("$sort",
-    //        new BsonDocument("tomatoes.viewer.numReviews", -1));
+        //    //I sort the results by the number of reviewers, descending
+        //    var sortStage = new BsonDocument("$sort",
+        //        new BsonDocument("tomatoes.viewer.numReviews", -1));
 
-    //    // In conjunction with limitStage, I enable pagination
-    //    var skipStage = new BsonDocument("$skip", DefaultMoviesPerPage * page);
+        //    // In conjunction with limitStage, I enable pagination
+        //    var skipStage = new BsonDocument("$skip", DefaultMoviesPerPage * page);
 
-    //    // I build the facets
-    //    var facetStage = BuildFacetStage();
+        //    // I build the facets
+        //    var facetStage = BuildFacetStage();
 
-    //    // I am the pipeline that runs all of the stages
-    //    var pipeline = new[]
-    //    {
-    //                matchStage,
-    //                sortStage,
-    //                skipStage,
-    //                limitStage,
-    //                facetStage
-    //                // add the remaining stages in the correct order
-    //};
+        //    // I am the pipeline that runs all of the stages
+        //    var pipeline = new[]
+        //    {
+        //                matchStage,
+        //                sortStage,
+        //                skipStage,
+        //                limitStage,
+        //                facetStage
+        //                // add the remaining stages in the correct order
+        //};
+
+        #region Facet Örnek Anlatım
+        // $facet, tek bir toplama aşaması içinde birden çok boyut veya yön genelinde verileri karakterize eden multi-faced aggregations oluşturmanıza olanak tanır. Multi-faced aggregations, veri tarama ve analizine rehberlik etmek için birden çok filtre ve kategorizasyon sağlar. Perakendeciler, ürün fiyatı, üretici, boyut vb. üzerinde filtreler oluşturarak arama sonuçlarını daraltmak için genellikle faset kullanır.
+
+        //$facet girdi belgelerini birden çok kez almaya gerek kalmadan aynı girdi belgeleri kümesi üzerinde çeşitli aggregationslara olanak tanır.
+
+        /*Kodu:
+          db.artwork.aggregate( [
+          {
+            $facet: {
+              "categorizedByTags": [
+                { $unwind: "$tags" },
+                { $sortByCount: "$tags" }
+              ],
+              "categorizedByPrice": [
+                // Filter out documents without a price e.g., _id: 7
+                { $match: { price: { $exists: 1 } } },
+                {
+                  $bucket: {
+                    groupBy: "$price",
+                    boundaries: [  0, 150, 200, 300, 400 ],
+                    default: "Other",
+                    output: {
+                      "count": { $sum: 1 },
+                      "titles": { $push: "$title" }
+                    }
+                  }
+                }
+              ],
+              "categorizedByYears(Auto)": [
+                {
+                  $bucketAuto: {
+                    groupBy: "$year",
+                    buckets: 4
+                  }
+                }
+              ]
+            }
+          }
+        ])
+         
+         */
+        /*Çıktısı
+         {
+              "categorizedByYears(Auto)" : [
+                // First bucket includes the document without a year, e.g., _id: 4
+                { "_id" : { "min" : null, "max" : 1902 }, "count" : 2 },
+                { "_id" : { "min" : 1902, "max" : 1918 }, "count" : 2 },
+                { "_id" : { "min" : 1918, "max" : 1926 }, "count" : 2 },
+                { "_id" : { "min" : 1926, "max" : 1931 }, "count" : 2 }
+              ],
+              "categorizedByPrice" : [
+                {
+                  "_id" : 0,
+                  "count" : 2,
+                  "titles" : [
+                    "Dancer",
+                    "Blue Flower"
+                  ]
+                },
+                {
+                  "_id" : 150,
+                  "count" : 2,
+                  "titles" : [
+                    "The Pillars of Society",
+                    "The Great Wave off Kanagawa"
+                  ]
+                },
+                {
+                  "_id" : 200,
+                  "count" : 1,
+                  "titles" : [
+                    "Melancholy III"
+                  ]
+                },
+                {
+                  "_id" : 300,
+                  "count" : 1,
+                  "titles" : [
+                    "Composition VII"
+                  ]
+                },
+                {
+                  // Includes document price outside of bucket boundaries, e.g., _id: 5
+                  "_id" : "Other",
+                  "count" : 1,
+                  "titles" : [
+                    "The Persistence of Memory"
+                  ]
+                }
+              ],
+              "categorizedByTags" : [
+                { "_id" : "painting", "count" : 6 },
+                { "_id" : "oil", "count" : 4 },
+                { "_id" : "Expressionism", "count" : 3 },
+                { "_id" : "Surrealism", "count" : 2 },
+                { "_id" : "abstract", "count" : 2 },
+                { "_id" : "woodblock", "count" : 1 },
+                { "_id" : "woodcut", "count" : 1 },
+                { "_id" : "ukiyo-e", "count" : 1 },
+                { "_id" : "satire", "count" : 1 },
+                { "_id" : "caricature", "count" : 1 }
+              ]
+            }
+         */
 
         #endregion
 
+        #endregion
 
         #region Basic Write-Insert
         //await _theatersCollection.InsertOneAsync(newTheater); //
@@ -508,7 +608,6 @@ namespace CSharpNotları
         //}); 
 
         #endregion
-
 
         #region Update Data
         //_theatersCollection.UpdateOneAsync();//return an UpdateResult object
@@ -621,7 +720,6 @@ namespace CSharpNotları
 
         #endregion
 
-
         #region BasicJoin
         //  {
         //  from: 'comments', commentsin içindeki
@@ -630,7 +728,6 @@ namespace CSharpNotları
         //  as: 'movie_comments'
         //}
         #endregion
-
 
         #region Look Up
         //var filter = new BsonDocument[]
@@ -687,45 +784,44 @@ namespace CSharpNotları
 
         #endregion
         #region LookUp Uygulama
-       // public async Task<Movie> AddCommentAsync(User user, ObjectId movieId, string comment,
-       //CancellationToken cancellationToken = default)
-       // {
-       //     try
-       //     {
-       //         var newComment = new Comment
-       //         {
-       //             Date = DateTime.UtcNow,
-       //             Text = comment,
-       //             Name = user.Name,
-       //             Email = user.Email,
-       //             MovieId = movieId
-       //         };
+        // public async Task<Movie> AddCommentAsync(User user, ObjectId movieId, string comment,
+        //CancellationToken cancellationToken = default)
+        // {
+        //     try
+        //     {
+        //         var newComment = new Comment
+        //         {
+        //             Date = DateTime.UtcNow,
+        //             Text = comment,
+        //             Name = user.Name,
+        //             Email = user.Email,
+        //             MovieId = movieId
+        //         };
 
-       //         await _commentsCollection.InsertOneAsync(
-       //            newComment,
-       //            new InsertOneOptions(),
-       //            cancellationToken);
+        //         await _commentsCollection.InsertOneAsync(
+        //            newComment,
+        //            new InsertOneOptions(),
+        //            cancellationToken);
 
-       //         return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
-       //     }
-       //     catch
-       //     {
-       //         return null;
-       //     }
-       // }
+        //         return await _moviesRepository.GetMovieAsync(movieId.ToString(), cancellationToken);
+        //     }
+        //     catch
+        //     {
+        //         return null;
+        //     }
+        // }
 
-       // public async Task<UpdateResult> UpdateCommentAsync(User user,
-       //    ObjectId movieId, ObjectId commentId, string comment,
-       //    CancellationToken cancellationToken = default)
-       // {
-       //     return await _commentsCollection.UpdateOneAsync(
-       //               Builders<Comment>.Filter.Where(c => c.Id == commentId && c.Email == user.Email),
-       //               Builders<Comment>.Update.Set(c => c.Text, comment).Set(c => c.Date, DateTime.UtcNow),
-       //               new UpdateOptions { IsUpsert = false },
-       //               cancellationToken);
-       // }
+        // public async Task<UpdateResult> UpdateCommentAsync(User user,
+        //    ObjectId movieId, ObjectId commentId, string comment,
+        //    CancellationToken cancellationToken = default)
+        // {
+        //     return await _commentsCollection.UpdateOneAsync(
+        //               Builders<Comment>.Filter.Where(c => c.Id == commentId && c.Email == user.Email),
+        //               Builders<Comment>.Update.Set(c => c.Text, comment).Set(c => c.Date, DateTime.UtcNow),
+        //               new UpdateOptions { IsUpsert = false },
+        //               cancellationToken);
+        // }
         #endregion
-
 
         #region Group Örnek Uygulama
         //public async Task<TopCommentsProjection> MostActiveCommentersAsync()
@@ -757,7 +853,6 @@ namespace CSharpNotları
         //}
         #endregion
 
-
         #region Son uygulama migration
         //    var bulkWriteDatesResult = await _moviesCollection.BulkWriteAsync(
         //   datePipelineResults.Select(updatedMovie => new ReplaceOneModel<Movie>(
@@ -772,7 +867,6 @@ namespace CSharpNotları
         //      updatedMovie)));
         #endregion
 
-
         #region Connection Pooling
         //appsettings de connection string aşşağıdaki gibi düznlenerek connection pooling ayarlanabilir
         //"MongoUri": "mongodb+srv://kaan:111222333@mflix.ulybz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -780,12 +874,10 @@ namespace CSharpNotları
 
         #endregion
 
-
         #region WriteTimeOut
         //"MongoUri": "mongodb+srv://m220student:m220student@mflix-12345.mongodb.net/sample_mflix?maxPoolSize=50"
         //"MongoUri": "mongodb+srv://m220student:m220student@mflix-12345.mongodb.net/sample_mflix?maxPoolSize=50&wtimeoutMS=2500"
         #endregion
-
 
         #region Çalışmasada user ekleme kodu
         //  db.createUser({
@@ -1512,6 +1604,29 @@ namespace CSharpNotları
 
 
         #endregion
+
+
+        #region Authentication and Authorization
+        //Opening the file mongod.conf:
+        //vi mongod.conf
+
+        //The new section of the configuration file that enables authentication and authorization:
+        //security:
+        //  authorization: enabled
+
+        //Shutting down the server:
+        //mongo admin --port 27001 --eval 'db.shutdownServer()'
+
+
+        //Restarting the server with mongod.conf:
+        //mongod -f mongod.conf
+
+        //Connecting to MongoDB on port 27001:
+        //mongo --port 27001
+
+        //Running a find() query on the accounts database:
+        //db.accounts.find( { }, { name: 1, ssn: 1 } )
+        #region
 
 
     }

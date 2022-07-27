@@ -1,64 +1,190 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vue.js</title>
-    <script src = "https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-</head>
-<body>
-    <div id="app">
-        <h3>{{title}}</h3>
-        <button>{{buttonTitle}}</button>
-        <p>{{paragraph}} </p>
-        <p v-text = "paragraph"></p>
-        <a v-bind:href="link" v-bind:data-id="dataId">Google</a><!--v-bind : yerine : kullanılabilir burada-->
-        <p v-html="details"></p>
-        <br><br><br><br>
-        <input type="text" v-on:keypress="inputEnter($event)"> <!-- v-on:keypress yerine @keypress-->
-        <br>
-        <button v-on:click="arttir()">Arttır</button>
-        <p>{{sayi}}</p>
-        <button v-on:click="azalt()">Azalt</button>
-        <input type="text" @keypress.Enter="inputEnterAzalt($event)">
-    </div>
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <!--#region DOM-Event-AttributeBinding-VDOM  -->
+
+    <div id="app" class="container">
+        <div class="row mt-5">
+            <!--#region Link Attr Binding  -->
+            <div @mousemove="updateCoords(2, $event)" @mouseleave="mouseleaved" class="col-2 card p-2">
+                <!-- Attr binding yaparken v-bind: yada : kullanılabilir -->
+                <a class="text-center"
+                v-bind:href="linkAttr.href"
+                :alt="linkAttr.alt"
+                v-bind:target="linkAttr.target"
+                v-bind:denemeattr="linkAttr.denemeattr"
+                >
+                {{linkAttr.title}}
+                </a>
+                <button v-on:click="changeTitle">
+                    Title Değiş
+                </button>
+                <span>{{coordinates}}</span>
+                <br>
+                <input type="text" v-model="inputValue" class="form-control">
+                <br/>
+                <button class="btn btn-primary btn-sm">Ekle</button>
+                <br/>
+                {{inputValue}}
+            </div>
+            <!--#endregion -->
+            
+            <!--#region click-mouseevent -->
+            <div class="col-2 card p-2">               
+                <h3 class="text-center">
+                    <!-- Vue değişkenlerinin kullanımı -->
+                    {{counter}}
+                </h3>
+                <div class="d-flex justify-content-center align-items-center">
+                    <!-- click event -->
+                    <button @click="inc" class="btn me-2 btn-sm btn-primary">+</button>
+                    <!-- küçük kodlar direk içine yazılabilir -->
+                    <button @click="counter--" class="btn btn-sm btn-danger">-</button>
+                </div>
+                <div class="alert alert-warning mt-2 text-center">
+                    5'ten {{counter > 5 ? "BÜYÜK" : "KÜÇÜK"}}
+                </div>
+            </div>
+            <!--#endregion -->
+            
+            <!--#region VDOM -->
+            <div class="col-2 card p-2">               
+                <h3 class="text-center">
+                    {{counter}}
+                </h3>
+                <div class="d-flex justify-content-center align-items-center">
+                    <button @click="inc" class="btn me-2 btn-sm btn-primary">+</button>
+                    <button @click="counter--" class="btn btn-sm btn-danger">-</button>
+                </div>
+                <div class="alert alert-warning mt-2 text-center">
+                    5'ten {{getCounterResult}}
+                </div>
+                <h3 class="text-center">
+                    {{counter2}}
+                </h3>
+                <div class="d-flex justify-content-center align-items-center">
+                    <button @click="counter2++" class="btn me-2 btn-sm btn-primary">+</button>
+                    <button @click="counter2--" class="btn btn-sm btn-danger">-</button>
+                </div>
+                <div class="alert alert-warning mt-2 text-center">
+                    7'den {{getCounterResult2}}
+                </div>
+            </div>
+            <!--#endregion -->
+
+            <!--#region ReactivityExamples -->
+            <div class="col-2 card p-2">  
+                <!-- @keydown.enter="searchList" ekleyerek inputa yapabilirdik.Onun yerine computed kullanmayı seçtik              -->
+                <input type="text" v-model="search" >
+                <button class="btn btn-sm btn-primary" @click="searchList">Ara</button>
+                <pre class="mt-3">{{itemList}}</pre>
+                <pre class="mt-3">{{filteredList}}</pre>
+            </div>
+            <!--#endregion -->
+            
+            <!--#region main  -->
+
+            <!--#endregion -->
+
+            <!--#region main  -->
+
+            <!--#endregion -->
+        </div>
+    </div>
+    <script src="app.js"></script>
 
 
     <script>
-        new Vue({
-            el:"#app",
-            data : {
-                title:"test başlıık",
-                buttonTitle:"Tıkla Gelsin",
-                paragraph:"lorem ipsum dolor sit amet lorem lorem",
-                link:"https://www.google.com",
-                dataId:"1",
-                details:"<b>Bu bir detay metinidir</p>",
-                sayi:0
+        var app = Vue.createApp({
+            data() {
+                return {
+                    counter: 0,
+                    counter2: 0,
+                    linkAttr:{
+                        href:"google.com",
+                        alt:"alt",
+                        target:"target",
+                        denemeattr:"denemeattr",
+                        title:"Link Attr Bind"
+                    },
+                    coordinates:"1-1",
+                    inputValue:"firstyValue",
+                    itemList:["elma","armut","kiraz","çilek"],
+                    // filteredList:[],
+                    search:""
+                };
             },
-            methods:{
-                arttir:function(){
-                    this.sayi++;
-                },
-                azalt:function(){
-                    this.sayi--;
-                },
-                inputEnter:function(e){
+            methods: {
+                updateCoords(entry,e){
+                    this.coordinates=entry + " : " + e.x + " - " + e.y;
                     console.log(e);
-                    if(e.keyCode ==13)
-                    {
-                        this.sayi += parseInt(e.target.value);
-                    };                    
                 },
-                inputEnterAzalt:function(e){
-                    console.log(e);                    
-                    this.sayi -= parseInt(e.target.value);                                        
+                mouseleaved(event){
+                    this.coordinates="Mouse Leaved" + " : " + event.x + " - " + event.y;
+                    console.log(event);
+                },
+                changeTitle(){
+                    this.linkAttr.title = this.linkAttr.title == "Title değişti" ? "Link Attr Bind" : "Title değişti";
+                },
+                inc() {
+                    this.counter++;
+                },
+                dec() {
+                    this.counter--;
+                },
+                searchList(){
+                    this.filteredList = this.itemList.filter((i) => i.includes(this.search));
                 }
-            }     
-        });
-    
+            },
+            //vue.js teki template değişirse bütün kodlar tekrar işleme konulur. 
+            //Bundan kaynaklanan olumsuz yüklemeleri kaldırmak için computed objesi kullanılarak
+            //sadece içindeki değişkenler değiştiğinde çalışan fonksiyonlar yazılabilir
+            computed: {
+                getCounterResult(){
+                    console.log("Counter 1 worked");
+                    return this.counter > 5 ? "Büyük" : "Küçük"
+                },
+                getCounterResult2(){
+                    console.log("Counter 2 worked");
+                    return this.counter2 > 7 ? "Büyük" : "Küçük"
+                },
+                filteredList(){
+                    return this.itemList.filter((i) => i.includes(this.search));
+                }
+            },
+            //watch ile belirtilen değişkenler izlenebilir ve değişim anında
+            //newValue ve oldValue ile işlemler sağlanabilir
+            watch:{
+                counter(newValue, oldValue){
+                    console.log(oldValue,"=>",newValue);
+                },
+                getCounterResult(newValue,oldValue){
+                    console.log(oldValue,"=>",newValue);
+                }
+            }
+
+
+
+        }).mount("#app");
     </script>
+
+    <!--#endregion -->
+
+
+
 </body>
+
 </html>
