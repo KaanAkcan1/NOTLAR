@@ -31,7 +31,7 @@
         }
 
         .border {
-            border: 5px dashed #666 !important;
+            border: 2px solid #666;
         }
 
         .red {
@@ -49,6 +49,7 @@
 </head>
 
 <body>
+    <!--#region DOM-Event-AttributeBinding-VDOM  -->
 
     <div id="app" class="container">
         <div class="row mt-5">
@@ -127,12 +128,9 @@
 
             <!--#region  Class Style Binding -->
             <div class="col-2 card p-2">
-                {{border}}
-                <button @click="showBorder = !showBorder">Border Ekle(me)</button>
                 <div class="box" :class="{border : showBorder}">
-                    
+                    <button @click="showBorder = !showBorder">Border Ekle(me)</button>
                 </div>
-                
             </div>
             <!--#endregion -->
 
@@ -163,7 +161,6 @@
                     // filteredList:[],
                     search: "",
                     showBorder:false,
-                    boxClass: "border red",
                     class: {
                         border: false,
                         boxClass: "border red",
@@ -224,6 +221,85 @@
         }).mount("#app");
     </script>
 
+    <!--#endregion -->
+
+    <!--#region Life Cycle Hooks  -->
+
+    <div id="app" class="container">
+        <div class="row mt-5">
+            <!--#region Link Attr Binding  -->
+            <div class="col-2 card p-2">
+                {{title}}
+                {{itemList}}
+            </div>
+            <!--#endregion -->
+
+
+
+            <!--#region   -->
+
+            <!--#endregion -->
+
+            <!--#region main  -->
+
+            <!--#endregion -->
+        </div>
+    </div>
+
+
+    <script>
+        var app = Vue.createApp({
+            data() {
+                return {
+                    title: ("Test Başlığı"),
+                    itemList: [],
+                };
+            },
+            // Instance oluşturulmadan olacaklar
+            beforeCreate() {
+                console.log("beforeCreate Çalıştı...");
+            },
+            // Instance oluşturulunca olacaklar
+            created() {
+                console.log("created Çalıştı...");
+                setTimeout(() => {
+                    this.itemList = [1, 2, 3, 4, 5, 6, 7, 8];
+                }, 2000);
+                setTimeout(() => {
+                    this.title = "Bu yeni başlık";
+                }, 3000);
+            },
+            //instance bağlanmadan olacaklar
+            beforeMount() {
+                console.log("beforeMount Çalıştı...");
+            },
+            //instance bağlanınca olacaklar
+            mounted() {
+                console.log("mounted Çalıştı...");
+            },
+            beforeUpdate() {
+                console.log("beforeUpdate Çalıştı...");
+            },
+            updated() {
+                console.log("updated Çalıştı...");
+            },
+            beforeUnmount() {
+                console.log("beforeUnmount Çalıştı...");
+            },
+            unmounted() {
+                console.log("unmounted Çalıştı...");
+            },
+
+        });
+
+        app.mount("#app");
+
+        // setTimeout(()=>{
+        //     app.unmount();
+        // }, 5000);
+    </script>
+
+    <!--#endregion -->
 
 </body>
 

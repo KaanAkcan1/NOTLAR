@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="FrontSide\Vue.html" />
+    <Content Include="FrontSide\VueJs\Vue.html" />
   </ItemGroup>
 
   <ItemGroup>
