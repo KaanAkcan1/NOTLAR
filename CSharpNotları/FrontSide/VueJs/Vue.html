@@ -31,7 +31,7 @@
         }
 
         .border {
-            border: 2px solid #666;
+            border: 5px dashed #666 !important;
         }
 
         .red {
@@ -44,6 +44,14 @@
 
         .blue {
             background-color: blue;
+        }
+        .uncomplated-item{
+            background-color:  #dc354536;
+            color:white;
+        }
+        .complated-item{
+            background-color: #19875440;
+            color:white;
         }
     </style>
 </head>
@@ -128,14 +136,70 @@
 
             <!--#region  Class Style Binding -->
             <div class="col-2 card p-2">
+                {{border}}
+                <button @click="showBorder = !showBorder">Border Ekle(me)</button>
                 <div class="box" :class="{border : showBorder}">
-                    <button @click="showBorder = !showBorder">Border Ekle(me)</button>
+                    
                 </div>
             </div>
             <!--#endregion -->
 
             <!--#region main  -->
+            <div class="col-2 card p-2">
+                <div class="">
+                    <button class="btn btn-sm btn-success" @click="showContainer = !showContainer">Aç/Kapat</button>
+                    <h4 v-if="!showContainer" class="text-danger">Başlangıçta gözükecek</h4>
+                    <h4 v-else class="text-primary">Sonra görenecek</h4>
+                    <hr/>
 
+                    <h3 :class="counterBoxClasses">{{counter3}}</h3>
+
+                    <button class="btn btn-sm btn-success" @click="counter3++">Arttır</button>
+                    <button class="btn btn-sm btn-danger" @click="counter3--">Azalt</button>
+
+                    <p v-if="counter3 < 0">Counter negatif bro</p>
+                    <p v-else-if="counter3 > 0">Counter pozitif bro</p>
+                    <p v-else>Counter zero zero zero</p>
+
+                    <hr/>
+                    <p v-show="counter3 < 0">negatif </p>
+                    <p v-show="counter3 > 0">pozitif</p>
+                    <p v-show="counter3 == 0">zero zero</p>
+                </div>
+            </div>
+            <!--#endregion -->
+
+            <!--#region main  -->
+            <div class="col-4 card p-2">
+                <div class="">
+                    <h3 class="text-center">TODO LİST</h3>
+                    <div class="d-flex justify-content-start">
+                        <input type="text" class="form-control me-2" @keydown.enter="addTodo">
+                    </div>
+                    <div v-if="todoList.length > 0">
+                        <ul class="list-group">
+                        <li v-for="todo in todoList" 
+                        :key="todo.id" 
+                        :class="{ 'complated-item' : todo.complated, 'uncomplated-item' : !todo.complated }"
+                        class="list-group-item d-flex justify-content-between">
+                            <div>
+                                <input type="checkbox" class="form-check-input" v-model="todo.complated" :id="`complated_checkbox_${todo.id}`">
+                                <label :for="`complated_checkbox_${todo.id}`" class="form-check-label ms-2">{{todo.text}}</label>
+                            </div> 
+                            <button class="btn btn-danger btn-sm" @click="removeItem(todo)">Sil</button>                           
+                        </li>
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-success">Tamamlanmış item sayısı :{{complatedItemCount}}</small>
+                            <small class="text-danger">Tamamlanmamış item sayısı :{{unComplatedItemCount}}</small>
+                        </div>
+                    </div>
+                    <div v-else class="alert alert-warning">Heniz eklenmiş bir todo bulunmamaktadır</div> 
+                </div>
+            </div>
+            <div class="col-4 card p-2">
+                <pre>{{todoList}}</pre>
+            </div>
             <!--#endregion -->
         </div>
     </div>
@@ -161,10 +225,23 @@
                     // filteredList:[],
                     search: "",
                     showBorder:false,
+                    boxClass: "border red",
                     class: {
                         border: false,
                         boxClass: "border red",
                     },
+                    showContainer: false,
+                    counter3: 0,
+                    todoList : [
+                        {id:1,text:"VueBootCamp1", complated:false},
+                        {id:2,text:"VueBootCamp2", complated:false},
+                        {id:3,text:"VueBootCamp3", complated:false},
+                        {id:4,text:"VueBootCamp4", complated:false},
+                        {id:5,text:"VueBootCamp5", complated:false},
+                        {id:6,text:"VueBootCamp6", complated:false},
+                        {id:7,text:"VueBootCamp7", complated:false},
+                        {id:8,text:"VueBootCamp8", complated:false}
+                    ],
                 };
             },
             methods: {
@@ -188,6 +265,17 @@
                 searchList() {
                     this.filteredList = this.itemList.filter((i) => i.includes(this.search));
                 },
+                addTodo(event){
+                    this.todoList.push({
+                        id : new Date().getTime(),
+                        text : event.target.value,
+                        complated:false,
+                    });
+                    event.target.value = "";
+                },
+                removeItem(todoItem){
+                    this.todoList = this.todoList.filter(todo => todo != todoItem);
+                }
             },
             //vue.js teki template değişirse bütün kodlar tekrar işleme konulur. 
             //Bundan kaynaklanan olumsuz yüklemeleri kaldırmak için computed objesi kullanılarak
@@ -204,6 +292,15 @@
                 filteredList() {
                     return this.itemList.filter((i) => i.includes(this.search));
                 },
+                counterBoxClasses(){
+                    return {"bg-success text-white": this.counter3 > 0, "bg-danger text-white": this.counter3 < 0};
+                },
+                complatedItemCount(){
+                    return this.todoList.filter((t) => t.complated).length;
+                },
+                unComplatedItemCount(){
+                    return this.todoList.filter((t) => !t.complated).length;
+                },
             },
             //watch ile belirtilen değişkenler izlenebilir ve değişim anında
             //newValue ve oldValue ile işlemler sağlanabilir
@@ -213,7 +310,7 @@
                 },
                 getCounterResult(newValue, oldValue) {
                     console.log(oldValue, "=>", newValue);
-                }
+                },
             }
 
 
@@ -222,84 +319,7 @@
     </script>
 
     <!--#endregion -->
-
-    <!--#region Life Cycle Hooks  -->
-
-    <div id="app" class="container">
-        <div class="row mt-5">
-            <!--#region Link Attr Binding  -->
-            <div class="col-2 card p-2">
-                {{title}}
-                {{itemList}}
-            </div>
-            <!--#endregion -->
-
-
-
-            <!--#region   -->
-
-            <!--#endregion -->
-
-            <!--#region main  -->
-
-            <!--#endregion -->
-        </div>
-    </div>
-
-
-    <script>
-        var app = Vue.createApp({
-            data() {
-                return {
-                    title: ("Test Başlığı"),
-                    itemList: [],
-                };
-            },
-            // Instance oluşturulmadan olacaklar
-            beforeCreate() {
-                console.log("beforeCreate Çalıştı...");
-            },
-            // Instance oluşturulunca olacaklar
-            created() {
-                console.log("created Çalıştı...");
-                setTimeout(() => {
-                    this.itemList = [1, 2, 3, 4, 5, 6, 7, 8];
-                }, 2000);
-                setTimeout(() => {
-                    this.title = "Bu yeni başlık";
-                }, 3000);
-            },
-            //instance bağlanmadan olacaklar
-            beforeMount() {
-                console.log("beforeMount Çalıştı...");
-            },
-            //instance bağlanınca olacaklar
-            mounted() {
-                console.log("mounted Çalıştı...");
-            },
-            beforeUpdate() {
-                console.log("beforeUpdate Çalıştı...");
-            },
-            updated() {
-                console.log("updated Çalıştı...");
-            },
-            beforeUnmount() {
-                console.log("beforeUnmount Çalıştı...");
-            },
-            unmounted() {
-                console.log("unmounted Çalıştı...");
-            },
-
-        });
-
-        app.mount("#app");
-
-        // setTimeout(()=>{
-        //     app.unmount();
-        // }, 5000);
-    </script>
-
-    <!--#endregion -->
+    
 
 </body>
 
