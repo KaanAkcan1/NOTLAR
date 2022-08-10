@@ -185,6 +185,23 @@ namespace CSharpNotları
             //Foreach döngü değil iterasyondur. Foreach içinde collectiona etki edicek kodlar çalıştırılamaz.              
         }
 
+        void HashSetKolleksiyonu()
+        {
+            //HashSet<T> sınıfı yüksek performanslı küme işlemleri sağlar. Küme, yinelenen öğe içermeyen ve öğeleri belirli bir sırada olmayan bir koleksiyondur.
+            var set = new HashSet<int>();
+            var set2 = new HashSet<int>();
+            set.UnionWith(set); // Noncompliant; no changes//Birleşimi
+            set.ExceptWith(set); // Noncompliant; always empty//Aynı olanları siliyor
+            set.IntersectWith(set2); // Noncompliant; no changes//Kesişim
+            set.IsProperSubsetOf(set); // Noncompliant; always false//set set 2 nin alt kümesi mi diye bakıyor. İkisi eşitse alt kümesi olmuyor properde
+            set.IsProperSupersetOf(set2); // Noncompliant; always false //set set2nin üst kümesi mi diye bakıyor. İkisi eşitse üst kümesi olmuyor propertyde
+            set.IsSubsetOf(set); // Noncompliant; always true
+            set.IsSupersetOf(set); // Noncompliant; always true
+            set.Overlaps(set); // Noncompliant; always true // bir tane bile eşit varsa true
+            set.SetEquals(set); // Noncompliant; always true // eşitmi değil mi 
+            set.SymmetricExceptWith(set); // Noncompliant; always empty
+        }
+
         void Methodlar()
         {
             #region Non-Trailing Named Arguments Sırasız değişken girme
