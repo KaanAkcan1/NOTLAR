@@ -171,29 +171,7 @@ namespace CSharpNotları
             #endregion
         }
 
-        void KodHızınıHesaplamak()
-        {
-            private static TimeSpan _pastTimeSpan;
 
-            private static void MyElapsedTime(TimeSpan ts)
-            {
-
-            TimeSpan diffTs = ts.Subtract(_pastTimeSpan);
-
-            _pastTimeSpan = ts;
-
-            Console.WriteLine(string.Format("Elapsed time {0}:{1} | Segment took {2}:{3}", Math.Floor(ts.TotalMinutes), ts.ToString("ss\\.ff"), Math.Floor(diffTs.TotalMinutes), diffTs.ToString("ss\\.ff")));
-            }
-
-
-            //var stopwatch = new Stopwatch();
-
-            //stopwatch.Start();
-
-            //MyElapsedTime(stopwatch.Elapsed);
-
-            //stopwatch.Stop();
-    }
 
     }
 
@@ -425,6 +403,158 @@ namespace CSharpNotları
 
     }
 
+    public class DotNet7
+    {
+        /// <summary>
+        /// Kullanıcıdan alınan istekleri limitlemeye yarayan bir sistem.
+        /// Her apide olması gerekir mantiki olarak. Zararlı yazılımlardan sürekli istek almamızı engeller
+        /// </summary>
+        void RateLimiting()
+        {
+            #region Basic RateLimit
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("Basic", _options =>
+                {
+                    _options.Window = TimeSpan.FromSeconds(12);
+                    _options.PermitLimit = 4;
+                    _options.QueueLimit = 2;
+                    _options.QueueProcessingOrder = QueueProcessingOrder.OlderFirst;
+                });
+            });
+
+            app.UseRateLimiter();
+
+            [EnableRateLimiting("Basic")]//Controllerda eklemen gerekiyor. limit konulmasını istediğin yere.
+
+            #endregion
+
+            #region Rate Limiter Algoritmaları
+            #region Fixed Window
+            //Sabit bir zaman aralığı kullanarak istekleri sınırlayan bir algoritmadır. Bir üstteki basic ratelimit örneğinin aynısı
+            #endregion
+
+            #region Sliding Window
+            //Sabit bir zaman aralığı kullanarak istekleri sınırlayan bir algoritmadır.Ancak sürenin yarısından sonra bir sonraki periyodun istek kotasından harcıyacak şekilde istekleri karşılar.
+
+            //
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddSlidingWindowLimiter("Sliding", _options =>
+                {
+                    _options.Window = TimeSpan.FromSeconds(12);//Periot zamanı
+                    _options.PermitLimit = 4;//Belirtilen sürece kullanılacak istek sayısı
+                    _options.QueueProcessingOrder = QueueProcessingOrder.OlderFirst;//Önce gelenlerin kullanılmasını tanımladık
+                    _options.QueueLimit = 2;//sıraya alınan istek sayısı
+                    _options.SegmentsPerWindow = 2;//En fazla bir önceki sürece aktarılacak istek sayısı
+                });
+            });
+            #endregion
+
+            #region Token Bucket
+            //Her bir peryotta işlenecek request sayısı kadar token üretmektedir. Eğer ki bu tokenlar kullanıldıysa diğer periyottan borç alınabilir. LAkin her periyotta token üretim miktarı kadar token üretilecek ve bu şekilde rate limit uygulanacaktır. Şunu unutmamak lazım ki, her periyofun max token limiyi verilen sabit sayı kadar olacaktır 
+
+            //
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddTokenBucketLimiter("TokenBuvket", _options =>
+                {                   
+                    _options.TokenLimit = 4;//
+                    _options.TokensPerPeriod = 4;
+                    _options.QueueProcessingOrder = QueueProcessing.OlderFirst;
+                    _options.QueueLimit = 2;
+                    _options.ReplenishmentPeriod = TimeSpan.FromSeconds(12);
+                });
+            });
+            #endregion
+
+            #region Concurency
+            //Asenkron requestleri sınırlandırmak için kullanılan bir algoritmadır. Her istej concurrency sınırı bir azaltmakta ve bittiği takdirde bu sınırı bir arttırmaktadır. Diğer algoritmalara nazaran sadece asenkron istekleri sınırlandırır.Diğerleri hepsini
+
+            //
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddConcurencyLimiter("TokenBuvket", _options =>
+                {
+                    _options.PerLimit = 4;
+                    _options.QueueProcessingOrder = QueueProcessing.OlderFirst;
+                    _options.QueueLimit = 2;
+                });
+            });
+            #endregion
+            #endregion
+
+            #region Attributes
+            #region EnableRateLimiting
+            //Controller yada action seviyesinde ratelimiti devreye sokammıza yarayan attr
+            #endregion
+
+            #region DisableRateLimiting
+            //Controller seviyesinde tanınan rate limit politikasını action seviyesinde işlevsiz kıran attr
+            #endregion
+            #endregion
+
+            #region Minimal Api kullanımı
+            app.MapGet("/", () =>
+            {
+                //Some Codes
+            }).RequeireRateLimiting("..");
+            #endregion
+
+            #region OnRejected Property
+            //Rate Limti uygulanan operasyonlarda sınırdan dolayı boşa çıkan requestlere söz konusu olduğu durumlarda loglama vs. gibi işlemleri yapabilmek için kullanılan event mantığnda bir propertydir.
+
+
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("Basic", _options =>
+                {
+                    _options.Window = TimeSpan.FromSeconds(12);
+                    _options.PermitLimit = 4;
+                    _options.QueueLimit = 2;
+                    _options.QueueProcessingOrder = QueueProcessingOrder.OlderFirst;
+                });
+
+                options.OnRejected = (context, CancellationToken) =>
+                {
+                    //Loglar...
+                    return new();
+                };
+            });
+
+
+            #endregion
+
+            #region Özelleştirilmiş
+            class CustomRateLimitPolicy : IRateLimiterPolicy<string>
+        {
+            public Func<OnRejectedContext, CancellationToken, ValueTask>? OnRejected =>
+            (context, cancellationToken) =>
+            {
+        //Log...
+                return new();
+            };
+
+            public RateLimitPartition<string> GetPartition(HttpContext httpContext)
+            {
+                return RateLimitPartition.GetFixedWindowLimiter("", _ => new()
+                {
+                    PermitLimit = 4,
+                    Window = TimeSpan.FromSeconds(12),
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 2
+                });
+            }
+        }
+
+        builder.Services.AddRateLimiter(options =>
+            {
+                options.AddPolicy<string,CustomRateLimitPolicy>("CustomPolicy");
+            });
+            #endregion
+        }
+    }
+    
 }
 
 
